@@ -1,11 +1,10 @@
-import { Heart, Activity, Calendar, TrendingDown, Download, Link } from 'lucide-react';
+import { Heart, Activity, Calendar, TrendingDown, Download } from 'lucide-react';
 import { RiskGauge } from '../common/RiskGauge';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { Patient } from '../../lib/mockData';
 import { useTheme } from '../../lib/ThemeContext';
 import { getCardClass, getHeadingClass, getBodyClass, getBgClass, getBorderClass, getAccentColor } from '../../lib/themeUtils';
-import { APIBadge } from '../common/APIBadge';
 import { toast } from 'sonner';
 
 interface SummaryCardProps {
@@ -135,19 +134,8 @@ export function SummaryCard({ patient }: SummaryCardProps) {
           </div>
         </div>
 
-        {/* Connected to Doctor Dashboard + Download Report */}
-        <div className="mt-4 flex items-center justify-between animate-in fade-in" style={{ animationDelay: '600ms' }}>
-          <div className={`flex items-center gap-2 px-3 py-2 rounded-lg backdrop-blur-sm ${
-            isDarkTheme
-              ? 'bg-white/[0.03] border border-white/[0.08]'
-              : 'bg-gray-50 border border-gray-100'
-          }`}>
-            <Link className="w-4 h-4 text-[#37E29D]" />
-            <span className={`text-xs ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
-              Connected to Doctor Dashboard
-            </span>
-            <APIBadge endpoint="POST /patient/{id}/update-response" />
-          </div>
+        {/* Download Report */}
+        <div className="mt-4 flex items-center justify-end animate-in fade-in" style={{ animationDelay: '600ms' }}>
           <Button
             onClick={() => {
               toast.success('Generating your recovery report...', {
