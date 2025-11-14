@@ -46,13 +46,13 @@ export function SummaryCard({ patient }: SummaryCardProps) {
         <div className="flex items-start justify-between mb-6">
           <div>
             <h2 
-              className="mb-2 gradient-text-glow"
+              className={`mb-2 ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'} font-semibold`}
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '28px' }}
             >
               Recovery Summary
             </h2>
             <p 
-              className="gradient-text-secondary text-sm"
+              className={`text-sm ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`}
               style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
             >
               Last updated: {patient.lastCheckIn}
@@ -80,11 +80,11 @@ export function SummaryCard({ patient }: SummaryCardProps) {
                 <stat.icon className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-sm gradient-text-muted" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
+                <p className={`text-sm ${isDarkTheme ? 'text-[#D0D0D0]' : 'text-[#374151]'}`} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
                   {stat.label}
                 </p>
                 <p 
-                  className="gradient-text-glow"
+                  className={isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '20px' }}
                 >
                   {stat.value}
@@ -125,7 +125,7 @@ export function SummaryCard({ patient }: SummaryCardProps) {
                 : 'text-red-600'
             }`} />
             <p 
-              className="text-sm gradient-text flex-1"
+              className={`text-sm flex-1 ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}`}
               style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
             >
               {patient.painLevel <= 3 && 'Excellent! Pain levels are well-managed. Keep up the recovery routine.'}
@@ -143,7 +143,7 @@ export function SummaryCard({ patient }: SummaryCardProps) {
               : 'bg-gray-50 border border-gray-100'
           }`}>
             <Link className="w-4 h-4 text-[#37E29D]" />
-            <span className="text-xs gradient-text-secondary" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
+            <span className={`text-xs ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
               Connected to Doctor Dashboard
             </span>
             <APIBadge endpoint="POST /patient/{id}/update-response" />

@@ -1,17 +1,15 @@
-import { useState } from 'react';
-import { CheckCircle, AlertTriangle, XCircle, TrendingUp, ChevronDown, ChevronUp, Info } from 'lucide-react';
+import { CheckCircle, AlertTriangle, XCircle, ExternalLink } from 'lucide-react';
 import { Card } from '../ui/card';
 import { Patient } from '../../lib/mockData';
 import { useTheme } from '../../lib/ThemeContext';
 
 interface RealityCheckCardProps {
   patient: Patient;
+  onViewDetails?: () => void;
 }
 
-export function RealityCheckCard({ patient }: RealityCheckCardProps) {
+export function RealityCheckCard({ patient, onViewDetails }: RealityCheckCardProps) {
   const { isDarkTheme } = useTheme();
-  const [expandedSection, setExpandedSection] = useState<'reported' | 'expected' | 'conflicts' | null>(null);
-  const [showTooltip, setShowTooltip] = useState(false);
 
   // Mock data for demonstration - in real app, this would come from API
   const alignmentScore = 82; // 0-100
@@ -45,53 +43,22 @@ export function RealityCheckCard({ patient }: RealityCheckCardProps) {
     ? `Your recovery today matches ${alignmentScore}% of what your doctor expected.`
     : 'Significant deviation detected — check conflicts below.';
 
-  const toggleSection = (section: 'reported' | 'expected' | 'conflicts') => {
-    setExpandedSection(expandedSection === section ? null : section);
-  };
-
   return (
     <Card className={`${isDarkTheme ? 'dark-glass-card' : 'light-glass-card'} p-6 rounded-[18px] card-hover-lift transition-all duration-400 overflow-hidden relative`}>
-      {/* Animated background glow */}
-      <div className={`absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none ${
-        statusColor === 'green' ? 'bg-gradient-to-br from-green-500/5 to-transparent' :
-        statusColor === 'yellow' ? 'bg-gradient-to-br from-yellow-500/5 to-transparent' :
-        'bg-gradient-to-br from-red-500/5 to-transparent'
-      }`} style={{ opacity: expandedSection ? 0.3 : 0 }} />
-
       <div className="animate-in fade-in slide-in-from-bottom-2 relative z-10">
-        <div className="flex items-start justify-between mb-6">
+        <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <h2
-                className="gradient-text-glow"
-                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '28px' }}
-              >
-                Reality Check
-              </h2>
-              {/* Info tooltip */}
-              <div className="relative">
-                <button
-                  onMouseEnter={() => setShowTooltip(true)}
-                  onMouseLeave={() => setShowTooltip(false)}
-                  className="p-1 rounded-full hover:bg-white/10 transition-colors"
-                  aria-label="Information about Reality Check"
-                >
-                  <Info className="w-4 h-4 text-[#5BC7FF]" />
-                </button>
-                {showTooltip && (
-                  <div className={`absolute left-0 top-8 z-50 w-64 p-3 rounded-lg shadow-xl animate-in fade-in slide-in-from-top-2 ${
-                    isDarkTheme ? 'bg-[#1C1F22] border border-white/20' : 'bg-white border border-gray-200'
-                  }`}>
-                    <p className="text-xs gradient-text-secondary" style={{ fontFamily: 'Inter, sans-serif' }}>
-                      AI compares your reported symptoms with expected recovery patterns to ensure you're on track.
-                    </p>
-                  </div>
-                )}
-              </div>
+            <h2
+              className={isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}
+              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '32px' }}
+            >
+              Reality Check
+            </h2>
             </div>
             <p
-              className="gradient-text-secondary text-sm"
-              style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
+              className={isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}
+              style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '16px' }}
             >
               AI Alignment Analysis
             </p>
@@ -108,11 +75,10 @@ export function RealityCheckCard({ patient }: RealityCheckCardProps) {
           </div>
         </div>
 
-        {/* AI Alignment Score Ring with enhanced animation */}
-        <div className="flex items-center justify-center mb-6">
-          <div className="relative w-32 h-32 group">
+        {/* Compact AI Alignment Score Ring */}
+        <div className="flex items-center justify-center mb-4">
+          <div className="relative w-24 h-24 group">
             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
-              {/* Background circle */}
               <circle
                 cx="60"
                 cy="60"
@@ -121,7 +87,6 @@ export function RealityCheckCard({ patient }: RealityCheckCardProps) {
                 strokeWidth="8"
                 fill="none"
               />
-              {/* Progress circle with gradient */}
               <defs>
                 <linearGradient id={`scoreGradient-${statusColor}`} x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor={
@@ -159,12 +124,12 @@ export function RealityCheckCard({ patient }: RealityCheckCardProps) {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
                 <div
-                  className="text-3xl font-bold gradient-text-glow transition-transform duration-300 group-hover:scale-110"
+                  className={`text-2xl font-bold transition-transform duration-300 group-hover:scale-110 ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}`}
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                 >
                   {alignmentScore}
                 </div>
-                <div className="text-xs gradient-text-secondary" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
+                <div className={`text-xs ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
                   Alignment
                 </div>
               </div>
@@ -172,143 +137,48 @@ export function RealityCheckCard({ patient }: RealityCheckCardProps) {
           </div>
         </div>
 
-        {/* Summary Text with animation */}
-        <div className="mb-6 text-center">
+        {/* Quick Summary */}
+        <div className="mb-4 text-center">
           <p
-            className="text-sm gradient-text animate-in fade-in slide-in-from-bottom-2"
+            className={`text-sm ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}`}
             style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, animationDelay: '200ms' }}
           >
-            {summaryText}
+            {alignmentScore >= 80
+              ? `Your recovery matches ${alignmentScore}% of expected patterns.`
+              : `${mismatches.length} parameter${mismatches.length > 1 ? 's' : ''} need${mismatches.length > 1 ? '' : 's'} attention.`
+            }
           </p>
         </div>
 
-        {/* Symptoms Comparison with collapsible sections */}
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Reported Today */}
-            <div className={`rounded-xl transition-all duration-400 overflow-hidden ${
-              isDarkTheme
-                ? 'bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.05]'
-                : 'bg-gray-50 border border-gray-100 hover:bg-gray-100'
-            } backdrop-blur-sm`}>
-              <button
-                onClick={() => toggleSection('reported')}
-                className="w-full p-4 text-left flex items-center justify-between"
-              >
-                <h3 className="text-sm font-medium gradient-text-secondary" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
-                  Reported Today
-                </h3>
-                {expandedSection === 'reported' ? (
-                  <ChevronUp className="w-4 h-4 text-[#5BC7FF] transition-transform" />
-                ) : (
-                  <ChevronDown className="w-4 h-4 text-[#5BC7FF] transition-transform" />
-                )}
-              </button>
-              <div className={`transition-all duration-300 ${expandedSection === 'reported' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
-                <ul className="px-4 pb-4 space-y-2">
-                  {reportedSymptoms.map((symptom, index) => (
-                    <li 
-                      key={index} 
-                      className="text-xs gradient-text flex items-center gap-2 animate-in fade-in slide-in-from-left-2" 
-                      style={{ 
-                        fontFamily: 'Inter, sans-serif', 
-                        fontWeight: 400,
-                        animationDelay: `${index * 100}ms`
-                      }}
-                    >
-                      <CheckCircle className="w-3 h-3 text-green-400 flex-shrink-0" />
-                      {symptom}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className={`text-center p-2 rounded-lg ${isDarkTheme ? 'bg-white/[0.03]' : 'bg-gray-50'}`}>
+            <div className={`text-lg font-semibold ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}`} style={{ fontFamily: 'Poppins, sans-serif' }}>
+              {reportedSymptoms.length}
             </div>
-
-            {/* Expected by Doctor */}
-            <div className={`rounded-xl transition-all duration-400 overflow-hidden ${
-              isDarkTheme
-                ? 'bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.05]'
-                : 'bg-gray-50 border border-gray-100 hover:bg-gray-100'
-            } backdrop-blur-sm`}>
-              <button
-                onClick={() => toggleSection('expected')}
-                className="w-full p-4 text-left flex items-center justify-between"
-              >
-                <h3 className="text-sm font-medium gradient-text-secondary" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
-                  Expected by Doctor
-                </h3>
-                {expandedSection === 'expected' ? (
-                  <ChevronUp className="w-4 h-4 text-[#5BC7FF] transition-transform" />
-                ) : (
-                  <ChevronDown className="w-4 h-4 text-[#5BC7FF] transition-transform" />
-                )}
-              </button>
-              <div className={`transition-all duration-300 ${expandedSection === 'expected' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
-                <ul className="px-4 pb-4 space-y-2">
-                  {expectedSymptoms.map((symptom, index) => (
-                    <li 
-                      key={index} 
-                      className="text-xs gradient-text flex items-center gap-2 animate-in fade-in slide-in-from-left-2" 
-                      style={{ 
-                        fontFamily: 'Inter, sans-serif', 
-                        fontWeight: 400,
-                        animationDelay: `${index * 100}ms`
-                      }}
-                    >
-                      <TrendingUp className="w-3 h-3 text-blue-400 flex-shrink-0" />
-                      {symptom}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div className={`text-xs ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`} style={{ fontFamily: 'Inter, sans-serif' }}>
+              Symptoms Tracked
             </div>
           </div>
-
-          {/* Mismatches with pulse animation for critical items */}
-          {mismatches.length > 0 && (
-            <div className={`rounded-xl transition-all duration-400 overflow-hidden ${
-              isDarkTheme
-                ? 'bg-red-500/10 border border-red-500/20 hover:bg-red-500/15'
-                : 'bg-red-50 border border-red-200 hover:bg-red-100'
-            } backdrop-blur-sm`}>
-              <button
-                onClick={() => toggleSection('conflicts')}
-                className="w-full p-4 text-left flex items-center justify-between"
-              >
-                <h3 className="text-sm font-medium text-red-400 flex items-center gap-2" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                  </span>
-                  Conflicts Detected
-                </h3>
-                {expandedSection === 'conflicts' ? (
-                  <ChevronUp className="w-4 h-4 text-red-400 transition-transform" />
-                ) : (
-                  <ChevronDown className="w-4 h-4 text-red-400 transition-transform" />
-                )}
-              </button>
-              <div className={`transition-all duration-300 ${expandedSection === 'conflicts' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
-                <ul className="px-4 pb-4 space-y-2">
-                  {mismatches.map((mismatch, index) => (
-                    <li 
-                      key={index} 
-                      className="text-xs text-red-300 flex items-center gap-2 animate-in fade-in slide-in-from-left-2" 
-                      style={{ 
-                        fontFamily: 'Inter, sans-serif', 
-                        fontWeight: 400,
-                        animationDelay: `${index * 100}ms`
-                      }}
-                    >
-                      <XCircle className="w-3 h-3 flex-shrink-0 animate-pulse" />
-                      {mismatch}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <div className={`text-center p-2 rounded-lg ${isDarkTheme ? 'bg-white/[0.03]' : 'bg-gray-50'}`}>
+            <div className={`text-lg font-semibold ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}`} style={{ fontFamily: 'Poppins, sans-serif' }}>
+              {mismatches.length}
             </div>
-          )}
+            <div className={`text-xs ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`} style={{ fontFamily: 'Inter, sans-serif' }}>
+              Conflicts
+            </div>
+          </div>
         </div>
+
+        {/* View Details Button */}
+        <button
+          onClick={onViewDetails}
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#5BC7FF] to-[#37E29D] text-white rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
+          style={{ fontFamily: 'Inter, sans-serif' }}
+        >
+          <span>View Detailed Analysis</span>
+          <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </button>
       </div>
     </Card>
   );

@@ -65,7 +65,7 @@ export function DailyCheckIn({ onCheckInComplete }: DailyCheckInProps) {
       <div className="animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '100ms' }}>
         <div className="flex items-center justify-between mb-6">
           <h3 
-            className="gradient-text-glow"
+            className={`${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'} font-semibold`}
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '22px' }}
           >
             Daily Check-In
@@ -81,7 +81,7 @@ export function DailyCheckIn({ onCheckInComplete }: DailyCheckInProps) {
           <div>
             <div className="flex items-center justify-between mb-4">
               <label 
-                className="gradient-text"
+                className={isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}
                 style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '15px' }}
               >
                 Current Pain Level
@@ -91,7 +91,7 @@ export function DailyCheckIn({ onCheckInComplete }: DailyCheckInProps) {
                   {painLevel[0]}/10
                 </span>
                 <span 
-                  className="text-sm gradient-text-secondary"
+                  className={`text-sm ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`}
                   style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
                 >
                   ({getPainLabel(painLevel[0])})

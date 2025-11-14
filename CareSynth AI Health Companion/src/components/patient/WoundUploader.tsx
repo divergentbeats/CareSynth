@@ -61,7 +61,7 @@ export function WoundUploader() {
   return (
     <Card className={`${isDarkTheme ? 'dark-glass-card' : 'light-glass-card'} p-6 rounded-[18px] card-hover-lift transition-all duration-400`}>
       <div className="animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '200ms' }}>
-        <h3 className="gradient-text-glow mb-4" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '22px' }}>
+        <h3 className={`mb-4 ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'} font-semibold`} style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '22px' }}>
           Wound Monitoring
         </h3>
 

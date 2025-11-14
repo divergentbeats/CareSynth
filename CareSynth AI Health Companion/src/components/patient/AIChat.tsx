@@ -148,14 +148,14 @@ export function AIChat({ initialMessages }: AIChatProps) {
             </div>
           </div>
 
-          <h3 className="text-2xl mb-2 flex items-center justify-center gap-2 luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
+          <h3 className={`text-2xl mb-2 flex items-center justify-center gap-2 luxury-spacing ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}`} style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
             AI Medical Assistant
             {/* Animated AI Spark */}
             <div className="sparkle-rotate">
               <Sparkles className="w-5 h-5 text-[#37E29D]" />
             </div>
           </h3>
-          <p className="text-[#A0A0A0] subtitle-glow" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
+          <p className={isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
             Get instant answers to your health questions
           </p>
         </div>
@@ -190,7 +190,7 @@ export function AIChat({ initialMessages }: AIChatProps) {
 
         {/* Features List */}
         <div className="animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.4s' }}>
-          <div className="grid grid-cols-2 gap-3 text-xs text-[#A0A0A0]">
+          <div className={`grid grid-cols-2 gap-3 text-xs ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`}>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-[#37E29D]"></div>
               <span>Symptom Analysis</span>

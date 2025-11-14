@@ -115,7 +115,7 @@ export function ConflictDetectionCard({ conflicts = [] }: ConflictDetectionCardP
             <AlertTriangle className="w-5 h-5 text-[#FFB84D] animate-pulse" />
           </div>
           <div>
-            <h3 className={`text-lg font-semibold ${primaryText} flex items-center gap-2`} style={{ fontFamily: 'Poppins, sans-serif' }}>
+            <h3 className={`text-xl font-semibold ${primaryText} flex items-center gap-2`} style={{ fontFamily: 'Poppins, sans-serif' }}>
               Conflict Detection
               {list.length > 0 && (
                 <span className="relative flex h-2 w-2">
@@ -190,7 +190,7 @@ export function ConflictDetectionCard({ conflicts = [] }: ConflictDetectionCardP
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <p className={`${primaryText} font-medium text-sm flex-1`} style={{ fontFamily: 'Poppins, sans-serif' }}>
+                      <p className={`${primaryText} font-medium text-base flex-1`} style={{ fontFamily: 'Poppins, sans-serif' }}>
                         {conflict.title}
                       </p>
                       <div className="flex items-center gap-2 flex-shrink-0">
