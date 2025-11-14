@@ -1,10 +1,8 @@
-import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { Bot } from 'lucide-react';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
-import { Textarea } from '../ui/textarea';
 import { ChatMessage } from '../../lib/mockData';
-import { api } from '../../lib/firestoreStubs';
 import { APIBadge } from '../common/APIBadge';
 import { useTheme } from '../../lib/ThemeContext';
 
@@ -14,177 +12,102 @@ interface AIChatProps {
 
 export function AIChat({ initialMessages }: AIChatProps) {
   const { isDarkTheme } = useTheme();
-  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
-  const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleSend = async () => {
-    if (!input.trim() || isTyping) return;
-
-    const userMessage: ChatMessage = {
-      id: `msg_${Date.now()}`,
-      sender: 'patient',
-      message: input,
-      timestamp: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setIsTyping(true);
-
-    // Simulate AI response
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    const aiResponse = await api.getAIResponse(input, {});
-
-    const aiMessage: ChatMessage = {
-      id: `msg_${Date.now() + 1}`,
-      sender: 'ai',
-      message: aiResponse.response,
-      timestamp: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
-    };
-
-    setMessages(prev => [...prev, aiMessage]);
-    setIsTyping(false);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
+  const handleClick = () => {
+    window.location.href = 'CareSynth AI Health Companion\\public\\AI_bot.html';
   };
 
   return (
-    <Card className={`${isDarkTheme ? 'dark-glass-card' : 'light-glass-card'} p-6 rounded-[18px] card-hover-lift transition-all duration-400 flex flex-col`} style={{ height: '500px' }}>
-      <div className="flex flex-col h-full animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#1C8B82] to-[#37E29D] flex items-center justify-center glow-pulse">
-              <Bot className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h3 className="gradient-text-glow" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '22px' }}>
-                AI Health Companion
-              </h3>
-              <p className="gradient-text-secondary text-sm" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
-                Available 24/7
-              </p>
-            </div>
-          </div>
-          <APIBadge endpoint="/api/ai/chat" />
+    <Card className={`${isDarkTheme ? 'dark-glass-card' : 'light-glass-card'} p-6 rounded-[18px] card-hover-lift transition-all duration-400 flex items-center justify-center`} style={{ height: '500px' }}>
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(55, 226, 157, 0.5), 0 0 40px rgba(55, 226, 157, 0.3); }
+          50% { box-shadow: 0 0 30px rgba(55, 226, 157, 0.8), 0 0 60px rgba(55, 226, 157, 0.5); }
+        }
+        
+        @keyframes shimmer {
+          0% { left: -100%; }
+          100% { left: 200%; }
+        }
+        
+        @keyframes rotate {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
+        .ai-button {
+          position: relative;
+          overflow: hidden;
+          animation: float 3s ease-in-out infinite;
+        }
+        
+        .ai-button:hover {
+          animation: float 3s ease-in-out infinite, pulse-glow 2s ease-in-out infinite;
+          transform: scale(1.05);
+        }
+        
+        .bot-icon-wrapper {
+          position: relative;
+          width: 48px;
+          height: 48px;
+          background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          animation: rotate 8s linear infinite;
+          box-shadow: 0 4px 15px rgba(55, 226, 157, 0.4);
+        }
+        
+        .ai-button:hover .bot-icon-wrapper {
+          animation: rotate 3s linear infinite;
+        }
+        
+        .bot-icon {
+          animation: float 2s ease-in-out infinite;
+        }
+        
+        .shimmer-overlay {
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+          animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        .ai-button:hover .shimmer-overlay {
+          animation: shimmer 1.5s ease-in-out infinite;
+        }
+        
+        .text-glow {
+          text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        
+        .ai-button:hover .text-glow {
+          text-shadow: 0 0 20px rgba(255,255,255,0.8);
+        }
+      `}</style>
+      
+      <Button
+        onClick={handleClick}
+        className="ai-button btn-gradient-shift text-white rounded-xl px-8 py-6 text-lg flex items-center gap-4"
+        style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
+      >
+        <div className="shimmer-overlay" />
+        
+        <div className="bot-icon-wrapper">
+          <Bot className="bot-icon w-6 h-6 relative z-10" />
         </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto space-y-4 mb-4">
-          {messages.map((msg, index) => (
-            <div
-              key={msg.id}
-              className={`flex gap-3 animate-in fade-in slide-in-from-bottom-2 ${msg.sender === 'patient' ? 'flex-row-reverse' : ''}`}
-              style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'both' }}
-            >
-              {/* Avatar */}
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 backdrop-blur-sm border ${
-                  isDarkTheme ? 'border-white/[0.12]' : 'border-gray-200'
-                } ${
-                  msg.sender === 'patient'
-                    ? 'bg-[#5BC7FF]/20'
-                    : 'bg-gradient-to-br from-[#1C8B82] to-[#37E29D]'
-                }`}
-              >
-                {msg.sender === 'patient' ? (
-                  <User className="w-4 h-4 text-[#5BC7FF]" />
-                ) : (
-                  <Bot className="w-4 h-4 text-white" />
-                )}
-              </div>
-
-              {/* Message Bubble */}
-              <div
-                className={`flex-1 max-w-[80%] ${
-                  msg.sender === 'patient' ? 'text-right' : ''
-                }`}
-              >
-                <div
-                  className={`inline-block p-3 rounded-2xl backdrop-blur-sm ${
-                    msg.sender === 'patient'
-                      ? 'bg-[#5BC7FF]/20 border border-[#5BC7FF]/30'
-                      : isDarkTheme
-                      ? 'bg-white/[0.05] border border-white/[0.12]'
-                      : 'bg-gray-50 border border-gray-200'
-                  }`}
-                  style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
-                >
-                  <p className="text-sm whitespace-pre-wrap gradient-text">{msg.message}</p>
-                </div>
-                <p className="text-xs gradient-text-muted mt-1" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
-                  {msg.timestamp}
-                </p>
-              </div>
-            </div>
-          ))}
-
-          {/* Typing Indicator */}
-          {isTyping && (
-            <div className="flex gap-3 animate-in fade-in slide-in-from-bottom-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1C8B82] to-[#37E29D] flex items-center justify-center">
-                <Bot className="w-4 h-4 text-white" />
-              </div>
-              <div className={`p-4 rounded-2xl backdrop-blur-sm border ${
-                isDarkTheme
-                  ? 'bg-white/[0.05] border-white/[0.12]'
-                  : 'bg-gray-50 border-gray-200'
-              }`}>
-                <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-[#37E29D] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 bg-[#37E29D] rounded-full animate-bounce" style={{ animationDelay: '200ms' }} />
-                  <div className="w-2 h-2 bg-[#37E29D] rounded-full animate-bounce" style={{ animationDelay: '400ms' }} />
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Input */}
-        <div className="flex gap-2">
-          <Textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyPress}
-            placeholder="Ask me anything about your recovery..."
-            className={`flex-1 resize-none rounded-xl border focus:border-[#37E29D] ${
-              isDarkTheme
-                ? 'bg-white/[0.05] border-white/[0.12] text-[#EAEAEA] placeholder:text-[#A7B0B5]'
-                : 'bg-white border-gray-300 placeholder:text-gray-400'
-            }`}
-            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
-            rows={2}
-          />
-          <Button
-            onClick={handleSend}
-            disabled={!input.trim() || isTyping}
-            className="btn-gradient-shift text-white rounded-xl px-4"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
-          >
-            {isTyping ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : (
-              <Send className="w-5 h-5" />
-            )}
-          </Button>
-        </div>
-      </div>
+        
+        <span className="text-glow relative z-10">Open AI Chat</span>
+      </Button>
     </Card>
   );
 }

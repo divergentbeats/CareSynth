@@ -325,8 +325,16 @@ export default function App() {
 
                 {/* Communication */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="card-entrance card-entrance-delay-5">
-                    <AIChat initialMessages={chatHistory} />
+                  <div className="card-entrance card-entrance-delay-5 flex items-center justify-center" style={{height: '100%'}}>
+                    <a
+                      href="/AI_bot.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-gradient-shift text-white rounded-xl px-6 py-3 text-lg font-semibold shadow-lg hover:scale-105 transition-all duration-300"
+                      style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
+                    >
+                      Open AI Medical Assistant
+                    </a>
                   </div>
                   <div className="card-entrance card-entrance-delay-5">
                     <MessageDoctor patient={{ ...currentPatient, painLevel }} />

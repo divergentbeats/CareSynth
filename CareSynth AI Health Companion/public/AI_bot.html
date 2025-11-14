@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARESYNC - AI Medical Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: #0a0e1a;
+            color: #00ff88;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated medical cross pattern background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 15% 25%, rgba(0, 255, 136, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(0, 200, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.02) 0%, transparent 60%);
+            animation: pulse 12s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Medical grid pattern */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 255, 136, 0.4);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; animation-duration: 15s; }
+        .particle:nth-child(2) { left: 80%; top: 60%; animation-delay: 3s; animation-duration: 18s; }
+        .particle:nth-child(3) { left: 30%; top: 80%; animation-delay: 6s; animation-duration: 22s; }
+        .particle:nth-child(4) { left: 70%; top: 30%; animation-delay: 9s; animation-duration: 20s; }
+        .particle:nth-child(5) { left: 50%; top: 50%; animation-delay: 12s; animation-duration: 16s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(30px, -30px); }
+            50% { transform: translate(-20px, 20px); }
+            75% { transform: translate(20px, 30px); }
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.15);
+            background: linear-gradient(135deg, rgba(10, 14, 26, 0.95) 0%, rgba(15, 25, 35, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .medical-icon {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            animation: rotate 20s linear infinite;
+        }
+
+        .medical-icon::before,
+        .medical-icon::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+        }
+
+        .medical-icon::before {
+            width: 12px;
+            height: 40px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .medical-icon::after {
+            width: 40px;
+            height: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 0.4rem;
+            background: linear-gradient(135deg, #00ff88, #00ccff, #00ff88);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite, glow 3s ease-in-out infinite;
+            text-transform: uppercase;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes glow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.4));
+            }
+            50% { 
+                filter: drop-shadow(0 0 35px rgba(0, 255, 136, 0.8)) 
+                        drop-shadow(0 0 50px rgba(0, 200, 255, 0.4));
+            }
+        }
+
+        .tagline {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            color: rgba(0, 255, 136, 0.8);
+            letter-spacing: 0.2rem;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Chatbot wrapper */
+        .chatbot-wrapper {
+            width: 100%;
+            border: 2px solid rgba(0, 255, 136, 0.25);
+            border-radius: 20px;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(10, 20, 30, 0.6) 0%, rgba(15, 30, 40, 0.5) 100%);
+            backdrop-filter: blur(15px);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 0 60px rgba(0, 255, 136, 0.15),
+                inset 0 0 60px rgba(0, 255, 136, 0.03);
+            animation: fadeIn 1s ease-out;
+            position: relative;
+            overflow: visible;
+        }
+
+        .chatbot-wrapper flowise-fullchatbot {
+            display: block;
+        }
+
+        /* Animated border effect */
+        .chatbot-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ff88, #00ccff, #00ff88, #00ccff);
+            background-size: 400% 400%;
+            border-radius: 20px;
+            z-index: -1;
+            animation: borderGlow 6s ease infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Scanning line effect */
+        .chatbot-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.8), rgba(0, 200, 255, 0.8), transparent);
+            animation: scan 4s linear infinite;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Corner decorations */
+        .corner-decoration {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(0, 255, 136, 0.4);
+            pointer-events: none;
+        }
+
+        .corner-decoration.top-left {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 8px 0 0 0;
+        }
+
+        .corner-decoration.top-right {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+            border-radius: 0 8px 0 0;
+        }
+
+        .corner-decoration.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+            border-radius: 0 0 0 8px;
+        }
+
+        .corner-decoration.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+            border-radius: 0 0 8px 0;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            color: rgba(0, 255, 136, 0.6);
+            border-top: 1px solid rgba(0, 255, 136, 0.15);
+            background: linear-gradient(135deg, rgba(10, 14, 26, 0.95) 0%, rgba(15, 25, 35, 0.9) 100%);
+            backdrop-filter: blur(20px);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            margin-top: 0.8rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(0, 255, 136, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .footer-links a:hover {
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.2rem;
+                letter-spacing: 0.3rem;
+            }
+            
+            .medical-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .chatbot-wrapper {
+                padding: 1rem;
+            }
+
+            header {
+                padding: 2rem 1rem;
+            }
+
+            .tagline {
+                font-size: 0.85rem;
+            }
+
+            .status-indicator {
+                font-size: 0.75rem;
+                padding: 0.4rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="medical-icon"></div>
+                <div class="logo">CARESYNC</div>
+            </div>
+            <div class="tagline">AI-Powered Medical Assistant</div>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span>System Online & Ready</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="chatbot-wrapper">
+            <div class="corner-decoration top-left"></div>
+            <div class="corner-decoration top-right"></div>
+            <div class="corner-decoration bottom-left"></div>
+            <div class="corner-decoration bottom-right"></div>
+            <flowise-fullchatbot></flowise-fullchatbot>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2025 CARESYNC | Advanced Healthcare Intelligence</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Medical Disclaimer</a>
+                <a href="#">Contact Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
+        Chatbot.initFull({
+            chatflowid: "36d030df-608a-49e1-a27f-1a6bd89c7447",
+            apiHost: "https://cloud.flowiseai.com",
+        })
+    </script>
+</body>
+</html>
