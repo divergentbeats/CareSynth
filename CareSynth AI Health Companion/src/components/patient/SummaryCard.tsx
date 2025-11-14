@@ -6,7 +6,7 @@ import { Patient } from '../../lib/mockData';
 import { useTheme } from '../../lib/ThemeContext';
 import { getCardClass, getHeadingClass, getBodyClass, getBgClass, getBorderClass, getAccentColor } from '../../lib/themeUtils';
 import { APIBadge } from '../common/APIBadge';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface SummaryCardProps {
   patient: Patient;

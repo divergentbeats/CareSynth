@@ -3,7 +3,7 @@ import { Send, Edit2, Sparkles, CheckCircle } from 'lucide-react';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { api } from '../../lib/firestoreStubs';
 import { Patient } from '../../lib/mockData';
 import { useTheme } from '../../lib/ThemeContext';
@@ -57,15 +57,15 @@ export function MessageDoctor({ patient }: MessageDoctorProps) {
 
   return (
     <Card className={`${isDarkTheme ? 'dark-glass-card' : 'light-glass-card'} p-6 rounded-[18px] card-hover-lift transition-all duration-400`}>
-      <div className="animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
-        <h3 className="gradient-text-glow mb-4" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '22px' }}>
+      <div>
+        <h3 className={`${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'} font-semibold text-2xl mb-4`} style={{ fontFamily: 'Poppins, sans-serif' }}>
           Message Your Doctor
         </h3>
 
         <div className="space-y-4">
           {/* Message Input */}
           <div>
-            <label className="block gradient-text-secondary text-sm mb-2" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
+            <label className={`block ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'} text-sm mb-2`} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
               Your Message
             </label>
             <Textarea
@@ -84,7 +84,7 @@ export function MessageDoctor({ patient }: MessageDoctorProps) {
 
           {/* Generate AI Summary Button */}
           {message && !aiSummary && (
-            <div className="animate-in fade-in slide-in-from-bottom-2">
+            <div>
               <Button
                 onClick={generateSummary}
                 disabled={isGenerating}
@@ -109,11 +109,11 @@ export function MessageDoctor({ patient }: MessageDoctorProps) {
 
           {/* AI Summary Preview */}
           {aiSummary && (
-            <div className="border-2 border-[#FFD580]/30 rounded-xl overflow-hidden backdrop-blur-sm animate-in fade-in slide-in-from-bottom-2">
+            <div className="border-2 border-[#FFD580]/30 rounded-xl overflow-hidden backdrop-blur-sm">
               <div className="bg-gradient-to-r from-[#FFD580]/20 to-[#5BC7FF]/20 px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-[#FFD580]" />
-                  <span className="gradient-text" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
+                  <span className={`${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'} font-semibold`} style={{ fontFamily: 'Poppins, sans-serif' }}>
                     AI-Generated Summary
                   </span>
                 </div>
@@ -143,7 +143,7 @@ export function MessageDoctor({ patient }: MessageDoctorProps) {
                     rows={10}
                   />
                 ) : (
-                  <pre className="text-sm gradient-text-secondary whitespace-pre-wrap font-sans" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
+                  <pre className={`text-sm ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'} whitespace-pre-wrap font-sans`} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
                     {aiSummary}
                   </pre>
                 )}
@@ -183,7 +183,7 @@ export function MessageDoctor({ patient }: MessageDoctorProps) {
             )}
           </Button>
 
-          <p className="gradient-text-muted text-sm text-center" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
+          <p className={`${isDarkTheme ? 'text-[#D0D0D0]' : 'text-[#374151]'} text-sm text-center`} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
             Dr. Smith typically responds within 4 hours
           </p>
         </div>

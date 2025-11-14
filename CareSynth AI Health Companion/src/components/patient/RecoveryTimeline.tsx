@@ -62,10 +62,10 @@ export function RecoveryTimeline({ events }: RecoveryTimelineProps) {
 
   return (
     <Card className={`${isDarkTheme ? 'dark-glass-card' : 'light-glass-card'} p-6 rounded-[18px] card-hover-lift transition-all duration-400`}>
-      <div ref={ref} className="animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '400ms' }}>
+      <div ref={ref}>
         <h3 
-          className="mb-6 gradient-text-glow"
-          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '22px' }}
+          className={`mb-6 ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'} font-semibold text-2xl`}
+          style={{ fontFamily: 'Poppins, sans-serif' }}
         >
           Recovery Timeline
         </h3>
@@ -87,15 +87,13 @@ export function RecoveryTimeline({ events }: RecoveryTimelineProps) {
               return (
                 <div
                   key={event.id}
-                  className={`relative flex gap-4 ${isVisible ? 'animate-in fade-in slide-in-from-left-4' : 'opacity-0'}`}
-                  style={{ animationDelay: `${index * 100 + 200}ms` }}
+                  className={`relative flex gap-4`}
                 >
                   {/* Icon */}
                   <div
                     className={`relative z-10 flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${colorClass} backdrop-blur-sm border ${
                       isDarkTheme ? 'border-white/[0.12]' : 'border-gray-200'
-                    } ${isVisible ? 'animate-in zoom-in' : 'scale-0'}`}
-                    style={{ animationDelay: `${index * 100 + 300}ms` }}
+                    }`}
                   >
                     <Icon className="w-5 h-5" />
                   </div>
@@ -105,26 +103,26 @@ export function RecoveryTimeline({ events }: RecoveryTimelineProps) {
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <h4 
-                          className="gradient-text"
-                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '16px' }}
+                          className={`${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'} font-semibold text-base`}
+                          style={{ fontFamily: 'Poppins, sans-serif' }}
                         >
                           {event.title}
                         </h4>
                         <p 
-                          className="text-sm gradient-text-secondary"
+                          className={`text-sm ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`}
                           style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
                         >
                           {event.description}
                         </p>
                       </div>
                       {event.completed && (
-                        <div className={`${isVisible ? 'animate-in zoom-in spin-in' : 'scale-0'}`} style={{ animationDelay: `${index * 100 + 400}ms` }}>
+                        <div>
                           <CheckCircle className="w-5 h-5 text-[#37E29D]" />
                         </div>
                       )}
                     </div>
                     <p 
-                      className="text-sm flex items-center gap-2 gradient-text-muted"
+                      className={`text-sm flex items-center gap-2 ${isDarkTheme ? 'text-[#D0D0D0]' : 'text-[#374151]'}`}
                       style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
                     >
                       <Calendar className="w-4 h-4" />
@@ -137,11 +135,10 @@ export function RecoveryTimeline({ events }: RecoveryTimelineProps) {
                           isDarkTheme 
                             ? 'bg-[#FFD580]/20 border border-[#FFD580]/30'
                             : 'bg-amber-50 border border-amber-200'
-                        } ${isVisible ? 'animate-in fade-in' : 'opacity-0'}`}
-                        style={{ animationDelay: `${index * 100 + 500}ms` }}
+                        }`}
                       >
                         <p 
-                          className="text-sm gradient-text"
+                          className={`text-sm ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}`}
                           style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
                         >
                           <strong>Resolution:</strong> Pain managed with adjusted medication. 
@@ -161,13 +158,12 @@ export function RecoveryTimeline({ events }: RecoveryTimelineProps) {
             isDarkTheme 
               ? 'bg-[#37E29D]/20 border border-[#37E29D]/30'
               : 'bg-green-50 border border-green-200'
-          } ${isVisible ? 'animate-in fade-in' : 'opacity-0'}`}
-          style={{ animationDelay: '800ms' }}
+          }`}
         >
           <div className="flex items-center gap-3">
             <TrendingUp className="w-5 h-5 text-[#37E29D]" />
             <p 
-              className="text-sm gradient-text"
+              className={`text-sm ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}`}
               style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
             >
               You're {completionPercentage.toFixed(0)}% 

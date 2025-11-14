@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { CheckCircle, AlertCircle } from 'lucide-react';
+import { CheckCircle, AlertCircle, FileText } from 'lucide-react';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { Slider } from '../ui/slider';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useTheme } from '../../lib/ThemeContext';
 
 interface DailyCheckInProps {
@@ -54,6 +54,10 @@ export function DailyCheckIn({ onCheckInComplete }: DailyCheckInProps) {
 
     // Reset after 2 seconds
     setTimeout(() => setIsComplete(false), 2000);
+  };
+
+  const handleReportRedirect = () => {
+    window.location.href = '/daily_report.html';
   };
 
   return (
@@ -150,6 +154,15 @@ export function DailyCheckIn({ onCheckInComplete }: DailyCheckInProps) {
             ) : (
               'Submit Check-In'
             )}
+          </Button>
+
+          <Button
+            onClick={handleReportRedirect}
+            className="w-full btn-gradient-sweep text-white rounded-xl flex items-center justify-center gap-2"
+            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
+          >
+            <FileText className="w-5 h-5" />
+            Send Your Daily Health Report
           </Button>
         </div>
       </div>

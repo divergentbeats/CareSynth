@@ -3,7 +3,7 @@ import { Pill, Clock, CheckCircle, Circle } from 'lucide-react';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { Medication } from '../../lib/mockData';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useTheme } from '../../lib/ThemeContext';
 
 interface MedicationTrackerProps {
@@ -36,16 +36,16 @@ export function MedicationTracker({ medications: initialMeds }: MedicationTracke
 
   return (
     <Card className={`${isDarkTheme ? 'dark-glass-card' : 'light-glass-card'} p-6 rounded-[18px] card-hover-lift transition-all duration-400`}>
-      <div className="animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '300ms' }}>
+      <div>
         <div className="flex items-center justify-between mb-6">
           <h3 
-            className="gradient-text-glow"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '22px' }}
+            className={`${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'} font-semibold text-2xl`}
+            style={{ fontFamily: 'Poppins, sans-serif' }}
           >
             Medication Tracker
           </h3>
           <div 
-            className="flex items-center gap-2 text-sm gradient-text-secondary"
+            className={`flex items-center gap-2 text-sm ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`}
             style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
           >
             <Pill className="w-4 h-4" />
@@ -57,29 +57,28 @@ export function MedicationTracker({ medications: initialMeds }: MedicationTracke
           {medications.map((med, index) => (
             <div
               key={med.id}
-              className={`p-4 rounded-xl backdrop-blur-sm animate-in fade-in slide-in-from-left-4 ${
+              className={`p-4 rounded-xl backdrop-blur-sm ${
                 isDarkTheme 
                   ? 'bg-white/[0.03] border border-white/[0.08]'
                   : 'bg-gray-50 border border-gray-200'
               }`}
-              style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
                   <h4 
-                    className="mb-1 gradient-text"
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '16px' }}
+                    className={`mb-1 ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'} font-semibold text-base`}
+                    style={{ fontFamily: 'Poppins, sans-serif' }}
                   >
                     {med.name}
                   </h4>
                   <p 
-                    className="text-sm mb-1 gradient-text-secondary"
+                    className={`text-sm mb-1 ${isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}`}
                     style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
                   >
                     {med.dosage} • {med.frequency}
                   </p>
                   <div 
-                    className={`flex items-center gap-2 text-sm ${isDarkTheme ? 'dark-mode-accent' : 'text-[#1C8B82]'}`}
+                    className={`flex items-center gap-2 text-sm ${isDarkTheme ? 'text-[#5BC7FF]' : 'text-[#1C8B82]'}`}
                     style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
                   >
                     <Clock className="w-4 h-4" />
@@ -121,7 +120,7 @@ export function MedicationTracker({ medications: initialMeds }: MedicationTracke
               {/* Progress Bar */}
               <div className="mt-3">
                 <div 
-                  className="flex items-center justify-between text-xs mb-1 gradient-text-muted"
+                  className={`flex items-center justify-between text-xs mb-1 ${isDarkTheme ? 'text-[#D0D0D0]' : 'text-[#374151]'}`}
                   style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
                 >
                   <span>Today's Progress</span>
@@ -142,15 +141,14 @@ export function MedicationTracker({ medications: initialMeds }: MedicationTracke
           ))}
         </div>
 
-        <div className={`mt-4 p-4 rounded-xl backdrop-blur-sm animate-in fade-in ${
+        <div className={`mt-4 p-4 rounded-xl backdrop-blur-sm ${
             isDarkTheme 
               ? 'bg-[#5BC7FF]/20 border border-[#5BC7FF]/30'
               : 'bg-blue-50 border border-blue-200'
           }`}
-          style={{ animationDelay: '600ms' }}
         >
           <p 
-            className="text-sm gradient-text"
+            className={`text-sm ${isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}`}
             style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
           >
             🔔 Medication reminders are sent via WhatsApp. Reply "TAKEN" to log doses automatically.

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Upload, Camera, CheckCircle, AlertTriangle, Loader2 } from 'lucide-react';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { api } from '../../lib/firestoreStubs';
 import { useTheme } from '../../lib/ThemeContext';
 

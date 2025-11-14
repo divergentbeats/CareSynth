@@ -315,6 +315,152 @@ export const whatsappLogs: WhatsAppLog[] = [
   }
 ];
 
+// Prescription Summary Mock Data
+export const prescriptionSummary = {
+  condition: 'Total Knee Arthroplasty with Patellar Resurfacing',
+  recoveryDays: 84,
+  symptomProgression: [
+    {
+      symptom: 'Pain Intensity',
+      week1: 'Severe (7-9/10)',
+      week2: 'High (6-8/10)',
+      week3: 'Moderate (4-6/10)',
+      week4: 'Mild-Mod (3-5/10)'
+    },
+    {
+      symptom: 'Joint Swelling',
+      week1: 'Severe edema',
+      week2: 'Moderate edema',
+      week3: 'Mild edema',
+      week4: 'Trace edema'
+    },
+    {
+      symptom: 'Range of Motion',
+      week1: '0-45° passive',
+      week2: '0-70° passive',
+      week3: '0-90° passive',
+      week4: '0-110° active'
+    },
+    {
+      symptom: 'Weight Bearing',
+      week1: 'Toe-touch only',
+      week2: 'Partial (25%)',
+      week3: 'Partial (50%)',
+      week4: 'Full with walker'
+    }
+  ],
+  doctorInstructions: [
+    'Keep surgical incision clean and dry for 48 hours post-op',
+    'Elevate operated leg above heart level when sitting or lying down',
+    'Apply cold therapy (ice packs) for 15-20 minutes every 2-3 hours during first week',
+    'Perform ankle pump exercises every hour while awake to prevent blood clots',
+    'Begin gentle quadriceps strengthening exercises immediately',
+    'Use prescribed pain medication as directed - do not skip doses',
+    'Sleep with a pillow between knees to maintain proper alignment',
+    'Avoid bending knee beyond 90° for first 4-6 weeks',
+    'Do not drive until cleared by physician (typically 4-6 weeks)',
+    'Attend all scheduled physical therapy appointments',
+    'Report any signs of infection: fever, increased redness, swelling, or drainage',
+    'Monitor for DVT symptoms: calf pain, swelling, shortness of breath',
+    'Gradually increase walking distance as tolerated',
+    'Maintain healthy diet and adequate hydration for healing',
+    'Avoid high-impact activities and contact sports indefinitely'
+  ],
+  complicationsTimeline: [
+    {
+      day: 1,
+      risk: 'Critical - Thromboembolism',
+      description: 'Highest risk period for blood clots. Strict mobilization protocol required.'
+    },
+    {
+      day: 3,
+      risk: 'Infection Prevention',
+      description: 'Monitor surgical site closely. Report any warmth, redness, or unusual drainage immediately.'
+    },
+    {
+      day: 7,
+      risk: 'Wound Healing',
+      description: 'Sutures/staples intact. Continue dressing changes as instructed.'
+    },
+    {
+      day: 14,
+      risk: 'Stiffness Prevention',
+      description: 'Begin formal physical therapy. Range of motion critical to prevent arthrofibrosis.'
+    },
+    {
+      day: 21,
+      risk: 'Implant Integration',
+      description: 'Bone healing progressing. Weight bearing gradually increased.'
+    },
+    {
+      day: 42,
+      risk: 'Functional Recovery',
+      description: 'Most acute healing complete. Focus on strength and endurance.'
+    },
+    {
+      day: 84,
+      risk: 'Long-term Outcome',
+      description: 'Final recovery assessment. Return to normal activities as tolerated.'
+    }
+  ],
+  redFlagSymptoms: [
+    'Severe pain not relieved by prescribed medication (8-10/10)',
+    'Fever greater than 101.5°F (38.6°C)',
+    'Chills or rigors (shaking)',
+    'Increased swelling, warmth, or redness around incision site',
+    'Purulent drainage or foul odor from surgical wound',
+    'Wound dehiscence (separation of surgical incision)',
+    'Sudden shortness of breath or chest pain',
+    'Calf pain, swelling, or redness (DVT signs)',
+    'Sudden numbness or tingling in leg or foot',
+    'Inability to move toes or foot',
+    'Excessive bleeding from surgical site',
+    'Signs of allergic reaction to medications',
+    'Confusion or altered mental status',
+    'Severe nausea/vomiting preventing medication intake',
+    'Signs of infection: increased heart rate, low blood pressure'
+  ]
+};
+
+// Mock conflicts detected today
+export const conflictsToday = [
+  {
+    id: 'conf1',
+    title: 'Elevated Heart Rate During Rest',
+    description: 'Resting heart rate increased from 72 to 88 bpm while patient reports feeling calm. May indicate early infection or stress response.',
+    severity: 'medium',
+    trend: 'up'
+  },
+  {
+    id: 'conf2',
+    title: 'Pain Scores vs. Medication Timing',
+    description: 'Patient reports moderate pain (6/10) but last pain medication was taken 8 hours ago. Consider timing adjustment.',
+    severity: 'low',
+    trend: 'stable'
+  },
+  {
+    id: 'conf3',
+    title: 'Sleep Quality vs. Energy Levels',
+    description: 'Patient reports poor sleep (4 hours) but indicates high energy levels. Monitor for medication side effects or sleep apnea.',
+    severity: 'medium',
+    trend: 'down'
+  },
+  {
+    id: 'conf4',
+    title: 'Wound Assessment Discrepancy',
+    description: 'Patient describes minimal swelling but wound photo shows increased erythema. Schedule clinical evaluation.',
+    severity: 'high',
+    trend: 'up'
+  },
+  {
+    id: 'conf5',
+    title: 'Appetite vs. Weight Bearing',
+    description: 'Patient reports good appetite but minimal weight bearing progress. May indicate pain inhibition or depression.',
+    severity: 'low',
+    trend: 'stable'
+  }
+];
+
 export const analyticsData = {
   painTrend: [
     { day: 'Day 1', pain: 8, target: 7 },

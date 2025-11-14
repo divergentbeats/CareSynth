@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARESYNC - Daily Health Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: #0a0e1a;
+            color: #00ff88;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated medical cross pattern background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 15% 25%, rgba(0, 255, 136, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(0, 200, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.02) 0%, transparent 60%);
+            animation: pulse 12s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Medical grid pattern */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 255, 136, 0.4);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; animation-duration: 15s; }
+        .particle:nth-child(2) { left: 80%; top: 60%; animation-delay: 3s; animation-duration: 18s; }
+        .particle:nth-child(3) { left: 30%; top: 80%; animation-delay: 6s; animation-duration: 22s; }
+        .particle:nth-child(4) { left: 70%; top: 30%; animation-delay: 9s; animation-duration: 20s; }
+        .particle:nth-child(5) { left: 50%; top: 50%; animation-delay: 12s; animation-duration: 16s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(30px, -30px); }
+            50% { transform: translate(-20px, 20px); }
+            75% { transform: translate(20px, 30px); }
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.15);
+            background: linear-gradient(135deg, rgba(10, 14, 26, 0.95) 0%, rgba(15, 25, 35, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .medical-icon {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            animation: rotate 20s linear infinite;
+        }
+
+        .medical-icon::before,
+        .medical-icon::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+        }
+
+        .medical-icon::before {
+            width: 12px;
+            height: 40px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .medical-icon::after {
+            width: 40px;
+            height: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 0.4rem;
+            background: linear-gradient(135deg, #00ff88, #00ccff, #00ff88);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+            text-transform: uppercase;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .page-title {
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            color: rgba(0, 255, 136, 0.8);
+            letter-spacing: 0.15rem;
+            font-weight: 300;
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Form sections */
+        .form-section {
+            margin-bottom: 2rem;
+            border: 2px solid rgba(0, 255, 136, 0.25);
+            border-radius: 16px;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(10, 20, 30, 0.6) 0%, rgba(15, 30, 40, 0.5) 100%);
+            backdrop-filter: blur(15px);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 0 40px rgba(0, 255, 136, 0.1);
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #00ff88;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #00ff88;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: rgba(0, 255, 136, 0.9);
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="time"],
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            background: rgba(0, 20, 10, 0.4);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: #00ff88;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        /* Photo upload section */
+        .photo-upload-area {
+            border: 2px dashed rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(0, 20, 10, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-upload-area:hover {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .photo-upload-area input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: rgba(0, 255, 136, 0.6);
+        }
+
+        .upload-text {
+            color: rgba(0, 255, 136, 0.8);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtext {
+            color: rgba(0, 255, 136, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-item {
+            position: relative;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .preview-item .remove-btn:hover {
+            background: rgba(255, 0, 0, 1);
+            transform: scale(1.1);
+        }
+
+        /* Checkboxes */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #00ff88;
+        }
+
+        /* Submit button */
+        .submit-btn {
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            color: #0a0e1a;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Results section */
+        .results-section {
+            margin-top: 2rem;
+            border: 2px solid rgba(0, 255, 136, 0.25);
+            border-radius: 16px;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(10, 20, 30, 0.6) 0%, rgba(15, 30, 40, 0.5) 100%);
+            backdrop-filter: blur(15px);
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .alert-box {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert-normal {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            color: #00ff88;
+        }
+
+        .alert-warning {
+            background: rgba(255, 200, 0, 0.1);
+            border-color: #ffc800;
+            color: #ffc800;
+        }
+
+        .alert-critical {
+            background: rgba(255, 50, 50, 0.1);
+            border-color: #ff3232;
+            color: #ff3232;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.85rem;
+            color: rgba(0, 255, 136, 0.6);
+            border-top: 1px solid rgba(0, 255, 136, 0.15);
+            background: linear-gradient(135deg, rgba(10, 14, 26, 0.95) 0%, rgba(15, 25, 35, 0.9) 100%);
+            backdrop-filter: blur(20px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .form-section {
+                padding: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="medical-icon"></div>
+                <div class="logo">CARESYNC</div>
+            </div>
+            <div class="page-title">Daily Health Analysis & Monitoring</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <form id="healthForm">
+            <!-- Patient Information -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">👤</span>
+                    Patient Information
+                </h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="patientName">Full Name</label>
+                        <input type="text" id="patientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" min="0" max="150" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Time</label>
+                        <input type="time" id="time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorname">Doctor's Name</label>
+                        <input type="text" id="doctorname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="patientID">Patient ID</label>
+                        <input type="number" id="patientID" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vital Signs -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">💓</span>
+                    Vital Signs
+                </h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="bloodPressure">Blood Pressure (mmHg)</label>
+                        <input type="text" id="bloodPressure" placeholder="120/80">
+                    </div>
+                    <div class="form-group">
+                        <label for="heartRate">Heart Rate (bpm)</label>
+                        <input type="number" id="heartRate" min="40" max="200">
+                    </div>
+                    <div class="form-group">
+                        <label for="temperature">Temperature (°F)</label>
+                        <input type="number" id="temperature" step="0.1" min="95" max="107">
+                    </div>
+                    <div class="form-group">
+                        <label for="oxygenSat">Oxygen Saturation (%)</label>
+                        <input type="number" id="oxygenSat" min="70" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="bloodSugar">Blood Sugar (mg/dL)</label>
+                        <input type="number" id="bloodSugar" min="40" max="400">
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Weight (kg)</label>
+                        <input type="number" id="weight" step="0.1" min="20" max="300">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Symptoms & Conditions -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">🩺</span>
+                    Symptoms & Health Conditions
+                </h2>
+                <div class="form-group">
+                    <label>Current Symptoms</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fever" value="fever">
+                            <label for="fever">Fever</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cough" value="cough">
+                            <label for="cough">Cough</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fatigue" value="fatigue">
+                            <label for="fatigue">Fatigue</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="headache" value="headache">
+                            <label for="headache">Headache</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="nausea" value="nausea">
+                            <label for="nausea">Nausea</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dizziness" value="dizziness">
+                            <label for="dizziness">Dizziness</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="breathingDiff" value="breathing">
+                            <label for="breathingDiff">Breathing Difficulty</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chestPain" value="chestPain">
+                            <label for="chestPain">Chest Pain</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label for="additionalSymptoms">Additional Symptoms / Notes</label>
+                    <textarea id="additionalSymptoms" placeholder="Describe any other symptoms, unusual feelings, or health concerns..."></textarea>
+                </div>
+            </div>
+
+            <!-- Medication & Treatment -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">💊</span>
+                    Medication & Treatment
+                </h2>
+                <div class="form-group">
+                    <label for="currentMedication">Current Medications</label>
+                    <textarea id="currentMedication" placeholder="List all medications with dosage..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="allergies">Known Allergies</label>
+                    <textarea id="allergies" placeholder="List any known allergies..."></textarea>
+                </div>
+            </div>
+
+            <!-- Skin Analysis Photos -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">📸</span>
+                    Skin & Visual Analysis
+                </h2>
+                <p style="color: rgba(0, 255, 136, 0.7); margin-bottom: 1rem; font-size: 0.9rem;">
+                    Upload photos of any skin changes, rashes, wounds, or areas of concern for AI-assisted analysis.
+                </p>
+                <div class="photo-upload-area" id="photoUploadArea">
+                    <input type="file" id="photoInput" accept="image/*" multiple>
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text">Click or drag to upload photos</div>
+                    <div class="upload-subtext">Supported: JPG, PNG (Max 5MB each)</div>
+                </div>
+                <div class="image-preview" id="imagePreview"></div>
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label for="skinNotes">Description of Skin Condition</label>
+                    <textarea id="skinNotes" placeholder="Describe the location, duration, and any changes in the affected area..."></textarea>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="button-container">
+                <button type="submit" class="submit-btn">Submit Health Data</button>
+            </div>
+        </form>
+
+        <!-- Success Message (Hidden initially) -->
+        <div class="results-section" id="successMessage">
+            <h2 class="section-title">
+                <span class="section-icon">✓</span>
+                Submission Status
+            </h2>
+            <div id="statusContent"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 CARESYNC | Confidential Medical Data - HIPAA Compliant</p>
+    </footer>
+
+    <script>
+        // Photo upload functionality
+        const photoInput = document.getElementById('photoInput');
+        const imagePreview = document.getElementById('imagePreview');
+        let uploadedImages = [];
+
+        photoInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size exceeds 5MB limit');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    uploadedImages.push({
+                        data: event.target.result,
+                        name: file.name
+                    });
+                    displayImages();
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        function displayImages() {
+            imagePreview.innerHTML = '';
+            uploadedImages.forEach((img, index) => {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+                div.innerHTML = `
+                    <img src="${img.data}" alt="${img.name}">
+                    <button class="remove-btn" onclick="removeImage(${index})">×</button>
+                `;
+                imagePreview.appendChild(div);
+            });
+        }
+
+        function removeImage(index) {
+            uploadedImages.splice(index, 1);
+            displayImages();
+        }
+
+        // Form submission
+        document.getElementById('healthForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                patientName: document.getElementById('patientName').value,
+                age: document.getElementById('age').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                vitals: {
+                    bloodPressure: document.getElementById('bloodPressure').value,
+                    heartRate: document.getElementById('heartRate').value,
+                    temperature: document.getElementById('temperature').value,
+                    oxygenSat: document.getElementById('oxygenSat').value,
+                    bloodSugar: document.getElementById('bloodSugar').value,
+                    weight: document.getElementById('weight').value
+                },
+                symptoms: getCheckedSymptoms(),
+                additionalSymptoms: document.getElementById('additionalSymptoms').value,
+                medications: document.getElementById('currentMedication').value,
+                allergies: document.getElementById('allergies').value,
+                skinNotes: document.getElementById('skinNotes').value,
+                images: uploadedImages
+            };
+
+            // Submit to backend
+            try {
+                // Change this URL to your actual backend endpoint
+                const response = await fetch('/api/health-analysis', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showSuccess('Health data submitted successfully!');
+                    // Optionally reset form
+                    // document.getElementById('healthForm').reset();
+                    // uploadedImages = [];
+                    // displayImages();
+                } else {
+                    showError('Failed to submit data. Please try again.');
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                showError('Network error. Please check your connection and try again.');
+            }
+        });
+
+        function getCheckedSymptoms() {
+            const checkboxes = document.querySelectorAll('.checkbox-item input[type="checkbox"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function showSuccess(message) {
+            const successSection = document.getElementById('successMessage');
+            const statusContent = document.getElementById('statusContent');
+            
+            statusContent.innerHTML = `
+                <div class="alert-box alert-normal">
+                    ✓ ${message}
+                </div>
+                <p style="color: rgba(0, 255, 136, 0.7); margin-top: 1rem;">
+                    Your health data has been securely submitted and will be reviewed by our medical team.
+                </p>
+            `;
+            
+            successSection.classList.add('active');
+            successSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showError(message) {
+            const successSection = document.getElementById('successMessage');
+            const statusContent = document.getElementById('statusContent');
+            
+            statusContent.innerHTML = `
+                <div class="alert-box alert-critical">
+                    ✗ ${message}
+                </div>
+            `;
+            
+            successSection.classList.add('active');
+            successSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+/*To integrate with your backend:
+
+1. Change the URL in the fetch call from /api/health-analysis to your actual backend endpoint
+2. The form sends all data as JSON including the uploaded images as base64
+3. Success and error messages will display automatically */

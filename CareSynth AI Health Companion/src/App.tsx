@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { User, Stethoscope, Heart, Menu, X, Moon, Sun } from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs';
+import { Heart, Menu, X, Moon, Sun } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Toaster } from './components/ui/sonner';
 
@@ -15,62 +14,33 @@ import { MedicationTracker } from './components/patient/MedicationTracker';
 import { RecoveryTimeline } from './components/patient/RecoveryTimeline';
 import { AIChat } from './components/patient/AIChat';
 import { MessageDoctor } from './components/patient/MessageDoctor';
-import { WhatsAppLogs } from './components/patient/WhatsAppLogs';
-
-// Doctor Components
-import { PatientList } from './components/doctor/PatientList';
-import { AlertFeed } from './components/doctor/AlertFeed';
-import { PatientDetailModal } from './components/doctor/PatientDetailModal';
-import { Analytics } from './components/doctor/Analytics';
-import { DoctorAIChat } from './components/doctor/DoctorAIChat';
+import { PrescriptionSummaryCard } from './components/patient/PrescriptionSummaryCard';
+import { ConflictDetectionCard } from './components/patient/ConflictDetectionCard';
+import { RealityCheckCard } from './components/patient/RealityCheckCard';
 
 // Mock Data
 import {
   currentPatient,
   medications,
   timeline,
-  allPatients,
-  alerts,
-  chatHistory,
-  whatsappLogs
+  prescriptionSummary,
+  conflictsToday
 } from './lib/mockData';
-import type { Patient, Alert } from './lib/mockData';
 
 // Theme Context
 import { ThemeContext } from './lib/ThemeContext';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState<'patient' | 'doctor'>('patient');
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [painLevel, setPainLevel] = useState(currentPatient.painLevel);
   const [isDarkTheme, setIsDarkTheme] = useState(true); // Theme state with toggle functionality
-  const [selectedDoctorPatient, setSelectedDoctorPatient] = useState<{ id: string; name: string }>({ id: '1', name: 'Sarah Johnson' });
-
-  const handlePatientClick = (patient: Patient) => {
-    setSelectedPatient(patient);
-    setIsModalOpen(true);
-  };
-
-  const handleAlertClick = (alert: Alert) => {
-    const patient = allPatients.find(p => p.id === alert.patientId);
-    if (patient) {
-      handlePatientClick(patient);
-    }
-  };
 
   const handlePainUpdate = (newPainLevel: number) => {
     setPainLevel(newPainLevel);
   };
 
-  const handleDoctorPatientChange = (patientId: string, patientName: string) => {
-    setSelectedDoctorPatient({ id: patientId, name: patientName });
-  };
-
-  const handleLogin = (role: 'patient' | 'doctor') => {
-    setActiveTab(role);
+  const handleLogin = () => {
     setIsLoggedIn(true);
   };
 
@@ -189,47 +159,14 @@ export default function App() {
               </div>
             </div>
 
-            {/* Desktop Tab Toggle + Theme Toggle */}
+            {/* Theme Toggle */}
             <div className="hidden md:flex items-center gap-4">
-              <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'patient' | 'doctor')}>
-                <TabsList className={`p-1.5 rounded-xl shadow-lg transition-all duration-300 ${
-                  isDarkTheme 
-                    ? 'bg-white/10 backdrop-blur-md border border-white/20' 
-                    : 'bg-white/60 backdrop-blur-md border border-[#1C8B82]/10'
-                }`}>
-                  <TabsTrigger 
-                    value="patient" 
-                    className={`rounded-lg flex items-center gap-2 px-6 transition-all duration-200 luxury-spacing ${
-                      isDarkTheme 
-                        ? 'data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#1C8B82] data-[state=active]:to-[#37E29D] data-[state=active]:text-white data-[state=active]:shadow-lg text-[#9AA0A6]' 
-                        : 'data-[state=active]:gradient-accent data-[state=active]:text-white data-[state=active]:shadow-lg'
-                    }`}
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
-                  >
-                    <User className="w-4 h-4" />
-                    Patient View
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="doctor" 
-                    className={`rounded-lg flex items-center gap-2 px-6 transition-all duration-200 luxury-spacing ${
-                      isDarkTheme 
-                        ? 'data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#1C8B82] data-[state=active]:to-[#37E29D] data-[state=active]:text-white data-[state=active]:shadow-lg text-[#9AA0A6]' 
-                        : 'data-[state=active]:gradient-accent data-[state=active]:text-white data-[state=active]:shadow-lg'
-                    }`}
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
-                  >
-                    <Stethoscope className="w-4 h-4" />
-                    Doctor View
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-
               {/* Modern Theme Toggle Icon Button - 36px Glass Circle */}
               <button
                 onClick={() => setIsDarkTheme(!isDarkTheme)}
                 className={`w-9 h-9 rounded-full flex items-center justify-center shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 ${
-                  isDarkTheme 
-                    ? 'bg-white/10 border border-white/20 hover:bg-white/15' 
+                  isDarkTheme
+                    ? 'bg-white/10 border border-white/20 hover:bg-white/15'
                     : 'bg-white/60 border border-gray-200/50 hover:bg-white/80'
                 }`}
               >
@@ -261,26 +198,14 @@ export default function App() {
             <div className="md:hidden mt-4 animate-in fade-in slide-in-from-top-2">
               <div className="flex flex-col gap-2">
                 <Button
-                  variant={activeTab === 'patient' ? 'default' : 'outline'}
+                  variant="default"
                   className="w-full justify-start gap-2 rounded-xl"
                   onClick={() => {
-                    setActiveTab('patient');
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <User className="w-4 h-4" />
-                  Patient View
-                </Button>
-                <Button
-                  variant={activeTab === 'doctor' ? 'default' : 'outline'}
-                  className="w-full justify-start gap-2 rounded-xl"
-                  onClick={() => {
-                    setActiveTab('doctor');
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  <Stethoscope className="w-4 h-4" />
-                  Doctor View
+                  <Heart className="w-4 h-4" />
+                  Patient Dashboard
                 </Button>
               </div>
             </div>
@@ -289,99 +214,71 @@ export default function App() {
 
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8">
-          {activeTab === 'patient' ? (
-            <div key="patient" className="animate-in fade-in slide-in-from-bottom-4">
-              {/* Patient View */}
-              <div className="space-y-6">
-                {/* Summary Card - Full Width */}
+          <div className="animate-in fade-in slide-in-from-bottom-4">
+            {/* Patient View */}
+            <div className="space-y-6">
+              {/* Summary Card - Full Width */}
+              <div className="card-entrance card-entrance-delay-1">
+                <SummaryCard patient={{ ...currentPatient, painLevel }} />
+              </div>
+
+              {/* Reality Check Card */}
+              <div className="card-entrance card-entrance-delay-1">
+                <RealityCheckCard patient={currentPatient} />
+              </div>
+
+              {/* Prescription + Conflict - side-by-side on large screens */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="card-entrance card-entrance-delay-1">
-                  <SummaryCard patient={{ ...currentPatient, painLevel }} />
+                  <PrescriptionSummaryCard {...prescriptionSummary} />
                 </div>
-
-                {/* Two Column Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="card-entrance card-entrance-delay-2">
-                    <DailyCheckIn onCheckInComplete={handlePainUpdate} />
-                  </div>
-                  <div className="card-entrance card-entrance-delay-2">
-                    <WoundUploader />
-                  </div>
-                </div>
-
-                {/* Medication and Timeline */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="card-entrance card-entrance-delay-3">
-                    <MedicationTracker medications={medications} />
-                  </div>
-                  <div className="card-entrance card-entrance-delay-3">
-                    <RecoveryTimeline events={timeline} />
-                  </div>
-                </div>
-
-                {/* WhatsApp Logs */}
-                <div className="card-entrance card-entrance-delay-4">
-                  <WhatsAppLogs logs={whatsappLogs} />
-                </div>
-
-                {/* Communication */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="card-entrance card-entrance-delay-5 flex items-center justify-center" style={{height: '100%'}}>
-                    <a
-                      href="/AI_bot.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-gradient-shift text-white rounded-xl px-6 py-3 text-lg font-semibold shadow-lg hover:scale-105 transition-all duration-300"
-                      style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
-                    >
-                      Open AI Medical Assistant
-                    </a>
-                  </div>
-                  <div className="card-entrance card-entrance-delay-5">
-                    <MessageDoctor patient={{ ...currentPatient, painLevel }} />
-                  </div>
+                <div className="card-entrance card-entrance-delay-1">
+                  <ConflictDetectionCard conflicts={conflictsToday} />
                 </div>
               </div>
-            </div>
-          ) : (
-            <div key="doctor" className="animate-in fade-in slide-in-from-bottom-4">
-              {/* Doctor View */}
-              <div className="space-y-6">
-                {/* Analytics Dashboard with Patient Selection */}
-                <div className="card-entrance card-entrance-delay-1">
-                  <Analytics onPatientChange={handleDoctorPatientChange} />
-                </div>
 
-                {/* Patient List, Alerts, and AI Chat */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="card-entrance card-entrance-delay-2">
-                    <PatientList
-                      patients={allPatients}
-                      onPatientClick={handlePatientClick}
-                    />
-                  </div>
-                  <div className="card-entrance card-entrance-delay-2">
-                    <AlertFeed
-                      alerts={alerts}
-                      onAlertClick={handleAlertClick}
-                    />
-                  </div>
+              {/* Two Column Layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="card-entrance card-entrance-delay-2">
+                  <DailyCheckIn onCheckInComplete={handlePainUpdate} />
                 </div>
+                <div className="card-entrance card-entrance-delay-2">
+                  <WoundUploader />
+                </div>
+              </div>
 
-                {/* AI Companion for Doctor */}
+              {/* Medication and Timeline */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="card-entrance card-entrance-delay-3">
-                  <DoctorAIChat selectedPatientName={selectedDoctorPatient.name} />
+                  <MedicationTracker medications={medications} />
+                </div>
+                <div className="card-entrance card-entrance-delay-3">
+                  <RecoveryTimeline events={timeline} />
+                </div>
+              </div>
+
+              {/* WhatsApp Logs removed - no longer relevant */}
+
+              {/* Communication */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="card-entrance card-entrance-delay-5 flex items-center justify-center" style={{height: '100%'}}>
+                  <a
+                    href="/AI_bot.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-gradient-shift text-white rounded-xl px-6 py-3 text-lg font-semibold shadow-lg hover:scale-105 transition-all duration-300"
+                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
+                  >
+                    Open AI Medical Assistant
+                  </a>
+                </div>
+                <div className="card-entrance card-entrance-delay-5">
+                  <MessageDoctor patient={{ ...currentPatient, painLevel }} />
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </main>
-
-        {/* Patient Detail Modal */}
-        <PatientDetailModal
-          patient={selectedPatient}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
 
         {/* Footer */}
         <footer className={`relative mt-16 py-8 border-t transition-all duration-500 ${
