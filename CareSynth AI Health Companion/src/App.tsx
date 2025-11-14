@@ -6,26 +6,18 @@ import { Toaster } from './components/ui/sonner';
 // Login Component
 import { Login } from './components/Login';
 
-// Patient Components
+// Patient Dashboard
+import { PatientDashboard } from './components/patient/PatientDashboard';
+
+// Prescription Onboarding Modal
+import PrescriptionOnboardingModal from './components/patient/PrescriptionOnboardingModal';
+
+// Individual Cards (for other uses)
 import { SummaryCard } from './components/patient/SummaryCard';
 import { DailyCheckIn } from './components/patient/DailyCheckIn';
-import { WoundUploader } from './components/patient/WoundUploader';
-import { MedicationTracker } from './components/patient/MedicationTracker';
-import { RecoveryTimeline } from './components/patient/RecoveryTimeline';
-import { AIChat } from './components/patient/AIChat';
-import { MessageDoctor } from './components/patient/MessageDoctor';
-import { PrescriptionSummaryCard } from './components/patient/PrescriptionSummaryCard';
-import { ConflictDetectionCard } from './components/patient/ConflictDetectionCard';
-import { RealityCheckCard } from './components/patient/RealityCheckCard';
 
 // Mock Data
-import {
-  currentPatient,
-  medications,
-  timeline,
-  prescriptionSummary,
-  conflictsToday
-} from './lib/mockData';
+import { currentPatient } from './lib/mockData';
 
 // Theme Context
 import { ThemeContext } from './lib/ThemeContext';
@@ -35,6 +27,7 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [painLevel, setPainLevel] = useState(currentPatient.painLevel);
   const [isDarkTheme, setIsDarkTheme] = useState(true); // Theme state with toggle functionality
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const handlePainUpdate = (newPainLevel: number) => {
     setPainLevel(newPainLevel);
@@ -42,6 +35,8 @@ export default function App() {
 
   const handleLogin = () => {
     setIsLoggedIn(true);
+    // Show onboarding modal if no prescription exists
+    setShowOnboarding(true);
   };
 
   // Show login if not logged in
@@ -215,75 +210,18 @@ export default function App() {
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8">
           <div className="animate-in fade-in slide-in-from-bottom-4">
-            {/* Patient View */}
-            <div className="space-y-6">
-              {/* Summary Card - Full Width */}
-              <div className="card-entrance card-entrance-delay-1">
-                <SummaryCard patient={{ ...currentPatient, painLevel }} />
-              </div>
-
-              {/* Reality Check Card */}
-              <div className="card-entrance card-entrance-delay-1">
-                <RealityCheckCard patient={currentPatient} />
-              </div>
-
-              {/* Prescription + Conflict - side-by-side on large screens */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="card-entrance card-entrance-delay-1">
-                  <PrescriptionSummaryCard {...prescriptionSummary} />
-                </div>
-                <div className="card-entrance card-entrance-delay-1">
-                  <ConflictDetectionCard conflicts={conflictsToday} />
-                </div>
-              </div>
-
-              {/* Two Column Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="card-entrance card-entrance-delay-2">
-                  <DailyCheckIn onCheckInComplete={handlePainUpdate} />
-                </div>
-                <div className="card-entrance card-entrance-delay-2">
-                  <WoundUploader />
-                </div>
-              </div>
-
-              {/* Medication and Timeline */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="card-entrance card-entrance-delay-3">
-                  <MedicationTracker medications={medications} />
-                </div>
-                <div className="card-entrance card-entrance-delay-3">
-                  <RecoveryTimeline events={timeline} />
-                </div>
-              </div>
-
-              {/* WhatsApp Logs removed - no longer relevant */}
-
-              {/* Communication */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="card-entrance card-entrance-delay-5 flex items-center justify-center" style={{height: '100%'}}>
-                  <a
-                    href="/AI_bot.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-gradient-shift text-white rounded-xl px-6 py-3 text-lg font-semibold shadow-lg hover:scale-105 transition-all duration-300"
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
-                  >
-                    Open AI Medical Assistant
-                  </a>
-                </div>
-                <div className="card-entrance card-entrance-delay-5">
-                  <MessageDoctor patient={{ ...currentPatient, painLevel }} />
-                </div>
-              </div>
-            </div>
+            {/* Patient Dashboard - Focused View */}
+            <PatientDashboard 
+              patient={currentPatient} 
+              onPainUpdate={handlePainUpdate}
+            />
           </div>
         </main>
 
         {/* Footer */}
         <footer className={`relative mt-16 py-8 border-t transition-all duration-500 ${
-          isDarkTheme 
-            ? 'border-white/10 dashboard-dark-card' 
+          isDarkTheme
+            ? 'border-white/10 dashboard-dark-card'
             : 'border-white/30 glass-card'
         }`}>
           <div className="container mx-auto px-4 text-center">
@@ -295,6 +233,13 @@ export default function App() {
             </p>
           </div>
         </footer>
+
+        {/* Prescription Onboarding Modal */}
+        <PrescriptionOnboardingModal
+          isOpen={showOnboarding}
+          onClose={() => setShowOnboarding(false)}
+          onComplete={() => setShowOnboarding(false)}
+        />
       </div>
     </ThemeContext.Provider>
   );
