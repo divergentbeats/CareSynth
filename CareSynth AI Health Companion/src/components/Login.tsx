@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Heart, Mail, Lock, User, Stethoscope, ArrowRight, Sparkles, Activity, Brain, Radio, QrCode, Shield } from 'lucide-react';
+import { TrendingUp, Mail, Lock, User, Stethoscope, ArrowRight, Sparkles, Activity, Brain, Radio, QrCode, Shield, Zap, Upload } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
@@ -11,6 +11,7 @@ export function Login({ onLogin }: LoginProps) {
   const [selectedRole, setSelectedRole] = useState<'patient' | 'doctor'>('patient');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [prescriptionFile, setPrescriptionFile] = useState<File | null>(null);
 
   const handleContinue = () => {
     onLogin(selectedRole);
@@ -58,66 +59,47 @@ export function Login({ onLogin }: LoginProps) {
                 <div
                   className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-[#37E29D] to-[#1C8B82] transition-transform hover:scale-105"
                 >
-                  <Heart className="w-10 h-10 text-white" fill="white" />
+                  <Zap className="w-10 h-10 text-white" fill="white" />
                 </div>
               </div>
               
-              <h1 className="text-4xl mb-3 flex items-center justify-center gap-3 luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
-                Welcome to CareSynth AI
+              <h1 className="text-2xl mb-3 flex items-center justify-center gap-3 luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
+                CareSynth AI Recovery Verification Assistant
                 {/* Animated AI Spark */}
                 <div className="sparkle-rotate">
-                  <Sparkles className="w-6 h-6 text-[#37E29D]" />
+                  <Sparkles className="w-5 h-5 text-[#37E29D]" />
                 </div>
               </h1>
               <p className="text-lg luxury-spacing text-[#A0A0A0]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
-                Your intelligent post-surgery recovery companion
+                Upload your prescription → AI extracts your expected recovery curve → You get a personalized dashboard
               </p>
             </div>
 
             {/* Role Toggle - Enhanced with Spring Pop & Glow */}
             <div className="mb-8 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
               <label className="block mb-4 text-center luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
-                Select Your Role
+                Upload Your Prescription
               </label>
               <div className="relative p-1.5 rounded-xl shadow-inner bg-white/[0.05] backdrop-blur-sm border border-[#37E29D]/10">
-                <div className="grid grid-cols-2 gap-1 relative">
+                <div className="grid grid-cols-1 gap-1 relative">
                   {/* Sliding Background with Glow */}
                   <div
                     className="absolute h-[calc(100%-8px)] rounded-lg shadow-md transition-all duration-300"
                     style={{
-                      left: selectedRole === 'patient' ? '4px' : 'calc(50% + 2px)',
-                      width: 'calc(50% - 6px)',
+                      left: '4px',
+                      width: 'calc(100% - 8px)',
                       background: 'linear-gradient(135deg, #37E29D 0%, #1C8B82 100%)',
                       boxShadow: '0 0 20px rgba(55, 226, 157, 0.4)',
                     }}
                   />
-                  
+
                   {/* Patient Button */}
                   <button
-                    onClick={() => setSelectedRole('patient')}
-                    className={`relative z-10 flex items-center justify-center gap-2 py-3 px-4 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] ${
-                      selectedRole === 'patient' 
-                        ? 'text-white' 
-                        : 'text-[#A0A0A0] hover:text-[#E8E8E8]'
-                    }`}
+                    className="relative z-10 flex items-center justify-center gap-2 py-3 px-4 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] text-white"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
                   >
                     <User className="w-4 h-4" />
                     <span>Patient</span>
-                  </button>
-                  
-                  {/* Doctor Button */}
-                  <button
-                    onClick={() => setSelectedRole('doctor')}
-                    className={`relative z-10 flex items-center justify-center gap-2 py-3 px-4 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] ${
-                      selectedRole === 'doctor' 
-                        ? 'text-white' 
-                        : 'text-[#A0A0A0] hover:text-[#E8E8E8]'
-                    }`}
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
-                  >
-                    <Stethoscope className="w-4 h-4" />
-                    <span>Doctor</span>
                   </button>
                 </div>
               </div>
@@ -125,6 +107,30 @@ export function Login({ onLogin }: LoginProps) {
 
             {/* Input Fields - Enhanced with Subtle Inner-Shadow Highlight */}
             <div className="space-y-5 mb-6 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
+              {/* Prescription Upload */}
+              <div>
+                <label className="block mb-3 luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
+                  Upload Prescription
+                </label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={(e) => setPrescriptionFile(e.target.files?.[0] || null)}
+                    className="hidden"
+                    id="prescription-upload"
+                  />
+                  <label
+                    htmlFor="prescription-upload"
+                    className="flex items-center justify-center gap-3 py-4 px-4 rounded-xl h-12 transition-all duration-300 bg-white/[0.05] backdrop-blur-sm border-[#37E29D]/20 text-[#E8E8E8] hover:border-[#37E29D] hover:bg-white/[0.1] cursor-pointer"
+                    style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
+                  >
+                    <Upload className="w-5 h-5 text-[#37E29D]" />
+                    <span>{prescriptionFile ? prescriptionFile.name : 'Choose prescription file...'}</span>
+                  </label>
+                </div>
+              </div>
+
               {/* Email */}
               <div>
                 <label className="block mb-3 luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
@@ -162,24 +168,7 @@ export function Login({ onLogin }: LoginProps) {
               </div>
             </div>
 
-            {/* QR Login Section */}
-            <div className="mb-6 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.45s', animationFillMode: 'both' }}>
-              <div className="relative rounded-xl p-4 bg-white/[0.03] backdrop-blur-sm border border-[#37E29D]/15 cursor-pointer overflow-hidden group qr-glow hover:scale-[1.02] transition-transform">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#37E29D]/20 to-[#1C8B82]/20 flex items-center justify-center border border-[#37E29D]/30">
-                    <QrCode className="w-5 h-5 text-[#37E29D]" />
-                  </div>
-                  <div>
-                    <p className="text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '15px' }}>
-                      Quick Login
-                    </p>
-                    <p className="text-[#A0A0A0] text-sm" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
-                      Scan your Hospital ID
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+
 
             {/* Continue Button - Enhanced with Gradient Shift & Arrow Slide */}
             <div className="mb-6 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
@@ -206,7 +195,7 @@ export function Login({ onLogin }: LoginProps) {
             </div>
 
             {/* Social Login Buttons */}
-            <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
+            <div className="grid grid-cols-1 gap-3 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
               {/* Google Button */}
               <button
                 className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.05] backdrop-blur-sm border border-[#37E29D]/20 text-[#E8E8E8] transition-all duration-300 hover:bg-white/[0.1] hover:border-[#37E29D]/40 hover:scale-[1.02] active:scale-[0.98]"
@@ -219,15 +208,6 @@ export function Login({ onLogin }: LoginProps) {
                   <path fill="#FBBC05" d="M5.277 14.268A7.12 7.12 0 0 1 4.909 12c0-.782.125-1.533.357-2.235L1.24 6.65A11.934 11.934 0 0 0 0 12c0 1.92.445 3.73 1.237 5.335l4.04-3.067Z"/>
                 </svg>
                 <span>Google</span>
-              </button>
-
-              {/* Hospital Portal Button */}
-              <button
-                className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.05] backdrop-blur-sm border border-[#37E29D]/20 text-[#E8E8E8] transition-all duration-300 hover:bg-white/[0.1] hover:border-[#37E29D]/40 hover:scale-[1.02] active:scale-[0.98]"
-                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '14px' }}
-              >
-                <Shield className="w-5 h-5 text-[#5BC7FF]" />
-                <span>Hospital</span>
               </button>
             </div>
 
@@ -303,7 +283,7 @@ export function Login({ onLogin }: LoginProps) {
             >
               <div className="rounded-2xl p-4 shadow-lg flex items-center gap-3 bg-white/[0.12] backdrop-blur-md border border-[#37E29D]/30 hover:scale-110 transition-transform">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#37E29D] to-[#1C8B82]">
-                  <Heart className="w-5 h-5 text-white" />
+                  <TrendingUp className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <div className="text-xs text-[#A0A0A0]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>Heart Rate</div>
@@ -393,10 +373,10 @@ export function Login({ onLogin }: LoginProps) {
           {/* Title Text */}
           <div className="text-center mt-12 animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
             <h2 className="mb-2 luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '22px' }}>
-              AI-Powered Healthcare Monitoring
+              Prescription Upload & Recovery Verification
             </h2>
             <p className="text-[#A0A0A0]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '15px' }}>
-              Real-time vitals tracking powered by advanced AI algorithms
+              Upload your prescription and let AI extract your personalized recovery curve
             </p>
           </div>
         </div>
