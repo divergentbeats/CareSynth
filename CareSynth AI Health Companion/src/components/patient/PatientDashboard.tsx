@@ -33,39 +33,75 @@ export function PatientDashboard({ patient = currentPatient, onPainUpdate }: Pat
     onPainUpdate?.(newPainLevel);
   };
 
+  // Helper component for section headers
+  const SectionHeader = ({ title }: { title: string }) => (
+    <div className="mb-6 animate-in fade-in slide-in-from-left-2">
+      <h2 
+        className="text-xl font-semibold"
+        style={{
+          fontFamily: 'Poppins, sans-serif',
+          color: isDarkTheme ? '#E8E8E8' : '#0B1220',
+          fontSize: '20px',
+          fontWeight: 600,
+          letterSpacing: '0.5px'
+        }}
+      >
+        {title}
+      </h2>
+      <div 
+        className="h-0.5 w-16 mt-2 rounded-full"
+        style={{
+          background: 'linear-gradient(90deg, #37E29D 0%, transparent 100%)'
+        }}
+      />
+    </div>
+  );
+
   return (
-    <div className="space-y-6">
-      {/* 1. Prescription Summary Card - Full Width */}
-      <div className="card-entrance card-entrance-delay-1">
-        <PrescriptionSummaryCard 
-          {...dashboardData}
-        />
-      </div>
+    <div className="space-y-12">
+      {/* SECTION 1: Recovery Overview */}
+      <section className="space-y-4">
+        <SectionHeader title="Recovery Overview" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="card-entrance card-entrance-delay-1">
+            <PrescriptionSummaryCard 
+              {...dashboardData}
+            />
+          </div>
+          <div className="card-entrance card-entrance-delay-1">
+            <RealityCheckCard patient={patient} />
+          </div>
+        </div>
+      </section>
 
-      {/* 2. Reality Check Card - Full Width */}
-      <div className="card-entrance card-entrance-delay-1">
-        <RealityCheckCard patient={patient} />
-      </div>
+      {/* SECTION 2: Health Metrics & Monitoring */}
+      <section className="space-y-4">
+        <SectionHeader title="Health Metrics & Monitoring" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="card-entrance card-entrance-delay-2">
+            <ConflictDetectionCard conflicts={conflictsToday} />
+          </div>
+          <div className="card-entrance card-entrance-delay-2">
+            <DailyCheckIn onCheckInComplete={handlePainUpdate} />
+          </div>
+        </div>
+      </section>
 
-      {/* 3. Conflict Detection Card - Full Width */}
-      <div className="card-entrance card-entrance-delay-1">
-        <ConflictDetectionCard conflicts={conflictsToday} />
-      </div>
+      {/* SECTION 3: Recovery Timeline */}
+      <section className="space-y-4">
+        <SectionHeader title="Recovery Timeline" />
+        <div className="card-entrance card-entrance-delay-3">
+          <RecoveryTimeline events={timeline} />
+        </div>
+      </section>
 
-      {/* 4. Recovery Timeline (RecoveryDeviationTimeline) */}
-      <div className="card-entrance card-entrance-delay-2">
-        <RecoveryTimeline events={timeline} />
-      </div>
-
-      {/* 5. Daily Questions Card (using DailyCheckIn for now) */}
-      <div className="card-entrance card-entrance-delay-2">
-        <DailyCheckIn onCheckInComplete={handlePainUpdate} />
-      </div>
-
-      {/* 6. Medication Tracker */}
-      <div className="card-entrance card-entrance-delay-3">
-        <MedicationTracker medications={medications} />
-      </div>
+      {/* SECTION 4: Medication Management */}
+      <section className="space-y-4">
+        <SectionHeader title="Medication Management" />
+        <div className="card-entrance card-entrance-delay-3">
+          <MedicationTracker medications={medications} />
+        </div>
+      </section>
     </div>
   );
 }

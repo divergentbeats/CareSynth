@@ -1,20 +1,18 @@
 import { useState } from 'react';
-import { TrendingUp, Mail, Lock, User, Stethoscope, ArrowRight, Sparkles, Activity, Brain, Radio, QrCode, Shield, Zap, Upload } from 'lucide-react';
+import { TrendingUp, Mail, Lock, User, Stethoscope, ArrowRight, Sparkles, Activity, Brain, Radio, QrCode, Shield, Zap } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
 interface LoginProps {
-  onLogin: (role: 'patient' | 'doctor') => void;
+  onLogin: () => void;
 }
 
 export function Login({ onLogin }: LoginProps) {
-  const [selectedRole, setSelectedRole] = useState<'patient' | 'doctor'>('patient');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [prescriptionFile, setPrescriptionFile] = useState<File | null>(null);
 
   const handleContinue = () => {
-    onLogin(selectedRole);
+    onLogin();
   };
 
   return (
@@ -78,58 +76,12 @@ export function Login({ onLogin }: LoginProps) {
             {/* Role Toggle - Enhanced with Spring Pop & Glow */}
             <div className="mb-8 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
               <label className="block mb-4 text-center luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
-                Upload Your Prescription
+                Enter Your Credentials
               </label>
-              <div className="relative p-1.5 rounded-xl shadow-inner bg-white/[0.05] backdrop-blur-sm border border-[#37E29D]/10">
-                <div className="grid grid-cols-1 gap-1 relative">
-                  {/* Sliding Background with Glow */}
-                  <div
-                    className="absolute h-[calc(100%-8px)] rounded-lg shadow-md transition-all duration-300"
-                    style={{
-                      left: '4px',
-                      width: 'calc(100% - 8px)',
-                      background: 'linear-gradient(135deg, #37E29D 0%, #1C8B82 100%)',
-                      boxShadow: '0 0 20px rgba(55, 226, 157, 0.4)',
-                    }}
-                  />
-
-                  {/* Patient Button */}
-                  <button
-                    className="relative z-10 flex items-center justify-center gap-2 py-3 px-4 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] text-white"
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
-                  >
-                    <User className="w-4 h-4" />
-                    <span>Patient</span>
-                  </button>
-                </div>
-              </div>
             </div>
 
             {/* Input Fields - Enhanced with Subtle Inner-Shadow Highlight */}
-            <div className="space-y-5 mb-6 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
-              {/* Prescription Upload */}
-              <div>
-                <label className="block mb-3 luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
-                  Upload Prescription
-                </label>
-                <div className="relative">
-                  <input
-                    type="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => setPrescriptionFile(e.target.files?.[0] || null)}
-                    className="hidden"
-                    id="prescription-upload"
-                  />
-                  <label
-                    htmlFor="prescription-upload"
-                    className="flex items-center justify-center gap-3 py-4 px-4 rounded-xl h-12 transition-all duration-300 bg-white/[0.05] backdrop-blur-sm border-[#37E29D]/20 text-[#E8E8E8] hover:border-[#37E29D] hover:bg-white/[0.1] cursor-pointer"
-                    style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
-                  >
-                    <Upload className="w-5 h-5 text-[#37E29D]" />
-                    <span>{prescriptionFile ? prescriptionFile.name : 'Choose prescription file...'}</span>
-                  </label>
-                </div>
-              </div>
+            <div className="space-y-5 mb-6 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
 
               {/* Email */}
               <div>
@@ -171,7 +123,7 @@ export function Login({ onLogin }: LoginProps) {
 
 
             {/* Continue Button - Enhanced with Gradient Shift & Arrow Slide */}
-            <div className="mb-6 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
+            <div className="mb-6 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
               <Button
                 onClick={handleContinue}
                 className="w-full h-13 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group relative overflow-hidden bg-gradient-to-r from-[#37E29D] to-[#1C8B82] hover:from-[#2FCA89] hover:to-[#157770] text-white hover:scale-[1.02] active:scale-[0.98]"
@@ -183,7 +135,7 @@ export function Login({ onLogin }: LoginProps) {
             </div>
 
             {/* Divider */}
-            <div className="relative mb-6 animate-in fade-in" style={{ animationDelay: '0.55s', animationFillMode: 'both' }}>
+            <div className="relative mb-6 animate-in fade-in" style={{ animationDelay: '0.45s', animationFillMode: 'both' }}>
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-[#37E29D]/20"></div>
               </div>
@@ -195,7 +147,7 @@ export function Login({ onLogin }: LoginProps) {
             </div>
 
             {/* Social Login Buttons */}
-            <div className="grid grid-cols-1 gap-3 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
+            <div className="grid grid-cols-1 gap-3 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
               {/* Google Button */}
               <button
                 className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/[0.05] backdrop-blur-sm border border-[#37E29D]/20 text-[#E8E8E8] transition-all duration-300 hover:bg-white/[0.1] hover:border-[#37E29D]/40 hover:scale-[1.02] active:scale-[0.98]"
@@ -214,7 +166,7 @@ export function Login({ onLogin }: LoginProps) {
             {/* Footer */}
             <p
               className="text-center text-sm mt-8 luxury-spacing text-[#A0A0A0] animate-in fade-in"
-              style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, animationDelay: '0.65s', animationFillMode: 'both' }}
+              style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, animationDelay: '0.55s', animationFillMode: 'both' }}
             >
               Demo mode • No real credentials required
             </p>
