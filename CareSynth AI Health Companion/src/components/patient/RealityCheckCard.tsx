@@ -172,7 +172,9 @@ export function RealityCheckCard({ patient, onViewDetails }: RealityCheckCardPro
 
         {/* View Details Button */}
         <button
-          onClick={onViewDetails}
+          onClick={() => {
+            window.open('http://localhost:5000', '_blank');
+          }}
           className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#5BC7FF] to-[#37E29D] text-white rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
           style={{ fontFamily: 'Inter, sans-serif' }}
         >

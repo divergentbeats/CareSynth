@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Upload, FileText, CheckCircle, ArrowRight, ArrowLeft, Loader2, Zap, Brain, Database, Check } from 'lucide-react';
 import { Card } from '../ui/card';
+import { usePatient } from '../../lib/PatientContext';
+import { generateDailyQuestions } from '../../lib/openai';
 
 interface PrescriptionOnboardingModalProps {
   isOpen: boolean;
@@ -14,9 +16,13 @@ const PrescriptionOnboardingModal: React.FC<PrescriptionOnboardingModalProps> = 
   onClose,
   onComplete,
 }) => {
+  const { setPatientProfile, setDailyQuestions, setIsAnalyzing } = usePatient();
   const [currentStep, setCurrentStep] = useState(0);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isAnalyzingLocal, setIsAnalyzingLocal] = useState(false);
   const [analysisStep, setAnalysisStep] = useState(0);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const steps = [
     { title: 'Upload Prescription', icon: Upload },
@@ -31,9 +37,137 @@ const PrescriptionOnboardingModal: React.FC<PrescriptionOnboardingModalProps> = 
     { label: 'Generating personalized recovery plan...', icon: Zap, duration: 1500 },
   ];
 
-  useEffect(() => {
-    if (currentStep === 1 && !isAnalyzing) {
+  const handleFileSelect = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      processFile(file);
+    }
+  };
+
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragOver(false);
+    const file = event.dataTransfer.files?.[0];
+    if (file) {
+      processFile(file);
+    }
+  };
+
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const processFile = async (file: File) => {
+    // Validate file type
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Please upload a PDF, JPG, or PNG file.');
+      return;
+    }
+
+    // Validate file size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      alert('File size must be less than 10MB.');
+      return;
+    }
+
+    setUploadedFile(file);
+    setCurrentStep(1); // Move to analysis step
+
+    try {
+      // Extract text from file
+      const text = await extractTextFromFile(file);
+
+      // Detect keywords and load appropriate profile
+      const profile = await loadProfileFromText(text);
+
+      // Set patient profile in context
+      setPatientProfile(profile);
+
+      // Generate daily questions using OpenAI
+      const questions = await generateDailyQuestions(JSON.stringify(profile));
+      setDailyQuestions(questions);
+
+      // Start analysis animation
+      setIsAnalyzingLocal(true);
       setIsAnalyzing(true);
+      setAnalysisStep(0);
+
+      // Run analysis steps
+      for (let i = 0; i < analysisSteps.length; i++) {
+        setAnalysisStep(i);
+        await new Promise(resolve => setTimeout(resolve, analysisSteps[i].duration));
+      }
+
+      setIsAnalyzingLocal(false);
+      setIsAnalyzing(false);
+      setTimeout(() => setCurrentStep(2), 1000); // Move to completion step
+
+    } catch (error) {
+      console.error('Error processing file:', error);
+      alert('Error processing file. Please try again.');
+      setCurrentStep(0); // Go back to upload step
+    }
+  };
+
+  const extractTextFromFile = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const result = event.target?.result;
+        if (typeof result === 'string') {
+          // For demo purposes, we'll simulate text extraction
+          // In a real app, you'd use a PDF parsing library or OCR for images
+          resolve(result);
+        } else {
+          reject(new Error('Failed to read file'));
+        }
+      };
+
+      reader.onerror = () => reject(new Error('File reading error'));
+
+      if (file.type === 'application/pdf') {
+        reader.readAsText(file); // This won't work for real PDFs, but for demo
+      } else {
+        reader.readAsText(file); // For images, you'd need OCR
+      }
+    });
+  };
+
+  const loadProfileFromText = async (text: string): Promise<any> => {
+    const lowerText = text.toLowerCase();
+
+    // Check for knee/arthroscopy keywords
+    if (lowerText.includes('arthroscopy') || lowerText.includes('knee') || lowerText.includes('meniscectomy')) {
+      const response = await fetch('/data/kiran.json');
+      return await response.json();
+    }
+    // Check for respiratory/infection keywords
+    else if (lowerText.includes('fever') || lowerText.includes('infection') || lowerText.includes('upper respiratory')) {
+      const response = await fetch('/data/sahana.json');
+      return await response.json();
+    }
+    // Default fallback
+    else {
+      const response = await fetch('/data/kiran.json');
+      return await response.json();
+    }
+  };
+
+  useEffect(() => {
+    if (currentStep === 1 && !isAnalyzingLocal) {
+      setIsAnalyzingLocal(true);
       setAnalysisStep(0);
 
       const runAnalysis = async () => {
@@ -41,13 +175,13 @@ const PrescriptionOnboardingModal: React.FC<PrescriptionOnboardingModalProps> = 
           setAnalysisStep(i);
           await new Promise(resolve => setTimeout(resolve, analysisSteps[i].duration));
         }
-        setIsAnalyzing(false);
+        setIsAnalyzingLocal(false);
         setTimeout(() => setCurrentStep(2), 1000);
       };
 
       runAnalysis();
     }
-  }, [currentStep, isAnalyzing]);
+  }, [currentStep, isAnalyzingLocal]);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -173,11 +307,32 @@ const PrescriptionOnboardingModal: React.FC<PrescriptionOnboardingModalProps> = 
                     </p>
                   </div>
 
-                  <Card className="p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer group">
+                  <Card
+                    className={`p-6 border-2 border-dashed transition-colors cursor-pointer group ${
+                      isDragOver
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                        : 'border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400'
+                    }`}
+                    onClick={handleFileSelect}
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                  >
                     <div className="text-center">
-                      <FileText className="w-12 h-12 mx-auto mb-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
-                      <p className="text-lg font-medium mb-2">Drop your prescription here</p>
+                      <FileText className={`w-12 h-12 mx-auto mb-4 transition-colors ${
+                        isDragOver ? 'text-blue-500' : 'text-gray-400 group-hover:text-blue-500'
+                      }`} />
+                      <p className="text-lg font-medium mb-2">
+                        {isDragOver ? 'Drop your prescription here' : 'Drop your prescription here'}
+                      </p>
                       <p className="text-sm text-gray-500 mb-4">or click to browse files</p>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
                       <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-200">
                         Choose File
                       </button>

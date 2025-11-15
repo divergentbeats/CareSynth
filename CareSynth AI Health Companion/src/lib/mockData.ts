@@ -59,13 +59,13 @@ export interface WhatsAppLog {
 }
 
 export const currentPatient: Patient = {
-  id: '1',
-  name: 'Sarah Johnson',
-  age: 58,
-  surgery: 'Knee Replacement',
-  dayPostOp: 5,
-  riskScore: 18,
-  painLevel: 4,
+  id: '230177',
+  name: 'Kiran',
+  age: 32,
+  surgery: 'Left Knee Arthroscopy (Partial Meniscectomy)',
+  dayPostOp: 3,
+  riskScore: 15,
+  painLevel: 5,
   lastCheckIn: '2 hours ago',
   photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
   status: 'stable'
@@ -84,66 +84,58 @@ export const medications: Medication[] = [
     id: '2',
     name: 'Aspirin',
     dosage: '81mg',
-    frequency: 'Daily',
+    frequency: 'Once daily (morning)',
     taken: [true, false, false, false],
     nextDose: 'Tomorrow 8:00 AM'
-  },
-  {
-    id: '3',
-    name: 'Cephalexin',
-    dosage: '500mg',
-    frequency: 'Every 8 hours',
-    taken: [true, true, true, false],
-    nextDose: 'In 4 hours'
   }
 ];
 
 export const timeline: TimelineEvent[] = [
   {
     id: '1',
-    date: 'Nov 3, 2025',
-    title: 'Knee Replacement Surgery',
-    description: 'Successful total knee arthroplasty performed',
+    date: 'Nov 9, 2025',
+    title: 'Left Knee Arthroscopy Surgery',
+    description: 'Partial meniscectomy performed successfully',
     type: 'surgery',
     completed: true
   },
   {
     id: '2',
-    date: 'Nov 4, 2025',
+    date: 'Nov 9, 2025',
     title: 'Day 1 Post-Op Check',
-    description: 'Vitals stable, pain managed',
+    description: 'Moderate pain, mild swelling - as expected',
     type: 'checkup',
     completed: true
   },
   {
     id: '3',
-    date: 'Nov 6, 2025',
-    title: 'Physical Therapy Session 1',
-    description: 'Initial mobility exercises',
+    date: 'Nov 11, 2025',
+    title: 'Partial Weight Bearing Begins',
+    description: 'Start weight bearing with walker/crutch',
     type: 'milestone',
     completed: true
   },
   {
     id: '4',
-    date: 'Nov 8, 2025',
-    title: 'Pain Escalation Alert',
-    description: 'Pain level increased to 7/10',
-    type: 'alert',
-    completed: true
+    date: 'Nov 12, 2025',
+    title: 'Physical Therapy Session 1',
+    description: 'Initial PT exercises and straight leg raising',
+    type: 'checkup',
+    completed: false
   },
   {
     id: '5',
-    date: 'Nov 10, 2025',
+    date: 'Nov 19, 2025',
     title: 'Follow-up Appointment',
-    description: 'Scheduled with Dr. Smith',
+    description: 'Day 10 post-op check with Dr. Gaurav Menon',
     type: 'checkup',
     completed: false
   },
   {
     id: '6',
-    date: 'Nov 17, 2025',
-    title: 'Suture Removal',
-    description: 'Expected 14 days post-op',
+    date: 'Nov 29, 2025',
+    title: 'Return to Full Activities',
+    description: 'Expected full recovery and mobility',
     type: 'milestone',
     completed: false
   }
@@ -315,111 +307,64 @@ export const whatsappLogs: WhatsAppLog[] = [
   }
 ];
 
-// Prescription Summary Mock Data
+// Prescription Summary Mock Data - Kiran's Complete Prescription
 export const prescriptionSummary = {
-  condition: 'Total Knee Arthroplasty with Patellar Resurfacing',
-  recoveryDays: 84,
+  hospital: 'Sunrise Orthopaedic & Multispeciality Hospital',
+  address: '1/220, Main Road, Bengaluru - 560034',
+  contact: '080-44478899',
+  doctor: 'Dr. Gaurav Menon, MS (Ortho)',
+  registrationNo: 'KMC/59721',
+  patientName: 'Kiran',
+  patientId: '230177',
+  age: 32,
+  date: '12/11/2025',
+  condition: 'Left Knee Arthroscopy (Partial Meniscectomy)',
+  surgeryDate: '09/11/2025',
+  recoveryDays: 21,
+  medications: [
+    { name: 'Oxycodone 5mg', dosage: 'One tablet every 6 hours for pain' },
+    { name: 'Aspirin 81mg', dosage: 'One tablet once daily (morning) for 14 days' }
+  ],
   symptomProgression: [
-    {
-      symptom: 'Pain Intensity',
-      week1: 'Severe (7-9/10)',
-      week2: 'High (6-8/10)',
-      week3: 'Moderate (4-6/10)',
-      week4: 'Mild-Mod (3-5/10)'
-    },
-    {
-      symptom: 'Joint Swelling',
-      week1: 'Severe edema',
-      week2: 'Moderate edema',
-      week3: 'Mild edema',
-      week4: 'Trace edema'
-    },
-    {
-      symptom: 'Range of Motion',
-      week1: '0-45° passive',
-      week2: '0-70° passive',
-      week3: '0-90° passive',
-      week4: '0-110° active'
-    },
-    {
-      symptom: 'Weight Bearing',
-      week1: 'Toe-touch only',
-      week2: 'Partial (25%)',
-      week3: 'Partial (50%)',
-      week4: 'Full with walker'
-    }
+    { day: '1-2', description: 'Moderate pain, mild swelling' },
+    { day: '3-5', description: 'Pain reduces, swelling may persist' },
+    { day: '6-10', description: 'Discomfort on movement, gradual improvement' },
+    { day: 'After 10', description: 'Minimal pain, improved knee mobility' }
+  ],
+  mobilityGuidance: [
+    'Straight leg raising and ankle pumps – 5 mins, 4x daily',
+    'Partial weight bearing with walker/crutch from Day 3',
+    'Physiotherapy session to start Day 4 (as scheduled)',
+    'Avoid squatting, twisting for 3 weeks'
   ],
   doctorInstructions: [
-    'Keep surgical incision clean and dry for 48 hours post-op',
-    'Elevate operated leg above heart level when sitting or lying down',
-    'Apply cold therapy (ice packs) for 15-20 minutes every 2-3 hours during first week',
-    'Perform ankle pump exercises every hour while awake to prevent blood clots',
+    'Keep the operated knee elevated while resting',
+    'Apply ice packs for 10 minutes every 4 hours',
+    'Change dressing as instructed',
+    'Adhere to physiotherapy schedule',
+    'Perform ankle pump exercises every hour while awake',
     'Begin gentle quadriceps strengthening exercises immediately',
-    'Use prescribed pain medication as directed - do not skip doses',
     'Sleep with a pillow between knees to maintain proper alignment',
-    'Avoid bending knee beyond 90° for first 4-6 weeks',
-    'Do not drive until cleared by physician (typically 4-6 weeks)',
+    'Avoid bending knee beyond 90° for first 3 weeks',
+    'Do not drive until cleared by physician (typically 2-3 weeks)',
     'Attend all scheduled physical therapy appointments',
-    'Report any signs of infection: fever, increased redness, swelling, or drainage',
+    'Monitor for infection: fever, increased redness, swelling, or drainage',
     'Monitor for DVT symptoms: calf pain, swelling, shortness of breath',
     'Gradually increase walking distance as tolerated',
     'Maintain healthy diet and adequate hydration for healing',
-    'Avoid high-impact activities and contact sports indefinitely'
-  ],
-  complicationsTimeline: [
-    {
-      day: 1,
-      risk: 'Critical - Thromboembolism',
-      description: 'Highest risk period for blood clots. Strict mobilization protocol required.'
-    },
-    {
-      day: 3,
-      risk: 'Infection Prevention',
-      description: 'Monitor surgical site closely. Report any warmth, redness, or unusual drainage immediately.'
-    },
-    {
-      day: 7,
-      risk: 'Wound Healing',
-      description: 'Sutures/staples intact. Continue dressing changes as instructed.'
-    },
-    {
-      day: 14,
-      risk: 'Stiffness Prevention',
-      description: 'Begin formal physical therapy. Range of motion critical to prevent arthrofibrosis.'
-    },
-    {
-      day: 21,
-      risk: 'Implant Integration',
-      description: 'Bone healing progressing. Weight bearing gradually increased.'
-    },
-    {
-      day: 42,
-      risk: 'Functional Recovery',
-      description: 'Most acute healing complete. Focus on strength and endurance.'
-    },
-    {
-      day: 84,
-      risk: 'Long-term Outcome',
-      description: 'Final recovery assessment. Return to normal activities as tolerated.'
-    }
+    'Avoid high-impact activities and contact sports for 6 weeks'
   ],
   redFlagSymptoms: [
-    'Severe pain not relieved by prescribed medication (8-10/10)',
-    'Fever greater than 101.5°F (38.6°C)',
-    'Chills or rigors (shaking)',
-    'Increased swelling, warmth, or redness around incision site',
-    'Purulent drainage or foul odor from surgical wound',
-    'Wound dehiscence (separation of surgical incision)',
+    'Sudden onset swelling, severe pain',
+    'Fever above 100°F',
+    'Knee locking or inability to move knee',
+    'Bleeding or discharge from wound site',
+    'Increased warmth or redness around incision',
     'Sudden shortness of breath or chest pain',
     'Calf pain, swelling, or redness (DVT signs)',
-    'Sudden numbness or tingling in leg or foot',
-    'Inability to move toes or foot',
-    'Excessive bleeding from surgical site',
-    'Signs of allergic reaction to medications',
-    'Confusion or altered mental status',
-    'Severe nausea/vomiting preventing medication intake',
-    'Signs of infection: increased heart rate, low blood pressure'
-  ]
+    'Numbness or tingling in leg or foot'
+  ],
+  followUpDate: '19/11/2025 (Day 10 after surgery)'
 };
 
 // Mock conflicts detected today

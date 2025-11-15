@@ -40,7 +40,7 @@ export function ConflictDetectionCard({ conflicts = [], onViewDetails }: Conflic
             <AlertTriangle className="w-5 h-5 text-[#FFB84D] animate-pulse" />
           </div>
           <div>
-            <h3 className={`text-xl font-semibold ${primaryText} flex items-center gap-2`} style={{ fontFamily: 'Poppins, sans-serif' }}>
+            <h3 className={`text-2xl font-semibold ${primaryText} flex items-center gap-2`} style={{ fontFamily: 'Poppins, sans-serif' }}>
               Conflict Detection
               {list.length > 0 && (
                 <span className="relative flex h-2 w-2">
@@ -49,7 +49,7 @@ export function ConflictDetectionCard({ conflicts = [], onViewDetails }: Conflic
                 </span>
               )}
             </h3>
-            <p className={`text-xs ${secondaryText} mt-0.5`} style={{ fontFamily: 'Inter, sans-serif' }}>
+            <p className={`text-sm ${secondaryText} mt-0.5`} style={{ fontFamily: 'Inter, sans-serif' }}>
               {list.length} {list.length === 1 ? 'conflict' : 'conflicts'} detected
             </p>
           </div>
@@ -82,7 +82,7 @@ export function ConflictDetectionCard({ conflicts = [], onViewDetails }: Conflic
           <div className="text-lg font-semibold gradient-text" style={{ fontFamily: 'Poppins, sans-serif' }}>
             {list.length}
           </div>
-          <div className="text-xs gradient-text-secondary" style={{ fontFamily: 'Inter, sans-serif' }}>
+          <div className="text-sm gradient-text-secondary" style={{ fontFamily: 'Inter, sans-serif' }}>
             Active Conflicts
           </div>
         </div>
@@ -90,7 +90,7 @@ export function ConflictDetectionCard({ conflicts = [], onViewDetails }: Conflic
           <div className="text-lg font-semibold gradient-text" style={{ fontFamily: 'Poppins, sans-serif' }}>
             {list.filter(c => c.severity === 'high').length}
           </div>
-          <div className="text-xs gradient-text-secondary" style={{ fontFamily: 'Inter, sans-serif' }}>
+          <div className="text-sm gradient-text-secondary" style={{ fontFamily: 'Inter, sans-serif' }}>
             High Priority
           </div>
         </div>
@@ -98,7 +98,7 @@ export function ConflictDetectionCard({ conflicts = [], onViewDetails }: Conflic
 
       {/* Quick Summary */}
       <div className="mb-4 text-center">
-        <p className={`text-sm ${secondaryText} animate-in fade-in slide-in-from-bottom-2`} style={{ fontFamily: 'Inter, sans-serif' }}>
+        <p className={`text-base ${secondaryText} animate-in fade-in slide-in-from-bottom-2`} style={{ fontFamily: 'Inter, sans-serif' }}>
           {list.length === 0
             ? 'No parameter conflicts detected today.'
             : `${list.filter(c => c.severity === 'high').length} high-priority conflicts require immediate attention.`
@@ -108,7 +108,7 @@ export function ConflictDetectionCard({ conflicts = [], onViewDetails }: Conflic
 
       {/* View Details Button */}
       <button
-        onClick={onViewDetails}
+        onClick={() => { window.location.href = 'https://trae2wo7a0vf.vercel.app/'; }}
         className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#FFB84D] to-[#FF6B6B] text-white rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
         style={{ fontFamily: 'Inter, sans-serif' }}
       >

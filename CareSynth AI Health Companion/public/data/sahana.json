@@ -1,0 +1,131 @@
+{
+  "patient": {
+    "id": "sahana_001",
+    "name": "Sahana Patel",
+    "age": 32,
+    "condition": "Upper Respiratory Infection",
+    "diagnosis": "Viral Pharyngitis with Fever",
+    "dayOfIllness": 3,
+    "riskScore": 15
+  },
+  "prescriptionSummary": {
+    "condition": "Upper Respiratory Infection - Viral Pharyngitis",
+    "recoveryDays": 10,
+    "symptomProgression": [
+      {
+        "day": 1,
+        "fever": "High (101-103°F)",
+        "soreThroat": "Severe",
+        "fatigue": "Severe",
+        "description": "Acute onset with high fever and systemic symptoms"
+      },
+      {
+        "day": 2,
+        "fever": "Moderate (99-101°F)",
+        "soreThroat": "Severe",
+        "fatigue": "Severe",
+        "description": "Peak symptoms with persistent fever"
+      },
+      {
+        "day": 3,
+        "fever": "Low grade (98-99°F)",
+        "soreThroat": "Moderate",
+        "fatigue": "Moderate",
+        "description": "Symptoms beginning to improve"
+      },
+      {
+        "day": 4,
+        "fever": "None",
+        "soreThroat": "Mild",
+        "fatigue": "Mild",
+        "description": "Significant improvement"
+      },
+      {
+        "day": 5,
+        "fever": "None",
+        "soreThroat": "Minimal",
+        "fatigue": "Minimal",
+        "description": "Near resolution"
+      },
+      {
+        "day": 6,
+        "fever": "None",
+        "soreThroat": "None",
+        "fatigue": "None",
+        "description": "Complete recovery"
+      }
+    ],
+    "doctorInstructions": [
+      "Rest in bed and avoid strenuous activity",
+      "Drink plenty of fluids: water, clear broths, herbal teas",
+      "Take acetaminophen (Tylenol) 500mg every 6 hours for fever/pain",
+      "Use throat lozenges or hard candy for sore throat relief",
+      "Use humidifier to keep air moist",
+      "Avoid smoking and secondhand smoke",
+      "Wash hands frequently to prevent spreading infection",
+      "Use separate towels and utensils while symptomatic",
+      "Monitor temperature every 4-6 hours",
+      "Contact doctor if fever persists >3 days or exceeds 103°F",
+      "Return to work/school only after fever-free for 24 hours",
+      "Complete full course of any prescribed antibiotics if bacterial",
+      "Use saline nasal spray for congestion",
+      "Elevate head while sleeping to reduce post-nasal drip",
+      "Avoid alcohol and caffeine which can dehydrate"
+    ],
+    "complicationsTimeline": [
+      {
+        "timeframe": "0-3 days",
+        "risk": "Medium",
+        "complications": ["Bacterial superinfection", "Dehydration", "High fever"],
+        "action": "Monitor closely, contact doctor if worsening"
+      },
+      {
+        "timeframe": "3-7 days",
+        "risk": "Low",
+        "complications": ["Sinusitis", "Ear infection", "Bronchitis"],
+        "action": "Follow up if symptoms persist"
+      },
+      {
+        "timeframe": "1-2 weeks",
+        "risk": "Low",
+        "complications": ["Chronic fatigue", "Recurrent infections"],
+        "action": "Consult doctor for persistent symptoms"
+      }
+    ],
+    "redFlagSymptoms": [
+      "Fever >103°F (39.4°C) or lasting >3 days",
+      "Difficulty breathing or shortness of breath",
+      "Chest pain or pressure",
+      "Severe headache or neck stiffness",
+      "Confusion or altered mental status",
+      "Persistent vomiting preventing fluid intake",
+      "Signs of dehydration: dry mouth, decreased urination",
+      "Rash or skin changes",
+      "Severe sore throat preventing swallowing",
+      "Ear pain or discharge",
+      "Sinus pain or facial swelling",
+      "Cough with blood or green/yellow sputum",
+      "Wheezing or asthma exacerbation",
+      "Abdominal pain or diarrhea",
+      "Joint pain or swelling"
+    ]
+  },
+  "expectedProgress": {
+    "fever": [102, 101, 99, 98, 97, 97, 97, 97, 97, 97],
+    "soreThroat": [9, 8, 7, 5, 3, 2, 1, 0, 0, 0],
+    "fatigue": [9, 8, 7, 5, 4, 2, 1, 0, 0, 0],
+    "congestion": [7, 8, 6, 5, 4, 3, 2, 1, 0, 0]
+  },
+  "dailyCheckInQuestions": [
+    "What is your current temperature?",
+    "On a scale of 0-10, how severe is your sore throat?",
+    "How would you rate your fatigue level today?",
+    "Do you have any nasal congestion or runny nose?",
+    "Have you experienced any cough today?",
+    "How much fluid have you consumed today?",
+    "Have you taken your fever-reducing medication as prescribed?",
+    "Are you experiencing any body aches or chills?",
+    "How many hours of sleep did you get last night?",
+    "Do you have any headache or ear pain?"
+  ]
+}

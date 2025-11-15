@@ -1,0 +1,45 @@
+{
+  "userId": "kiran",
+  "uploadedAt": "2025-11-15T00:00:00.000Z",
+  "filePath": "",
+  "extracted": {
+    "condition": "Left Knee Arthroscopy (Partial Meniscectomy)",
+    "expectedRecoveryDays": 14,
+    "symptomProgression": [
+      70, 68, 60, 55, 50, 45, 40, 35, 30, 25, 18, 12, 8, 5
+    ],
+    "medications": [
+      "Oxycodone 5mg – One tablet every 6 hours",
+      "Aspirin 81mg – One tablet once daily for 14 days"
+    ],
+    "redFlags": [
+      "Sudden onset swelling",
+      "Severe pain",
+      "Fever above 100°F",
+      "Knee locking",
+      "Inability to move knee",
+      "Bleeding",
+      "Discharge from wound site"
+    ],
+    "instructions": [
+      "Keep the operated knee elevated while resting",
+      "Apply ice packs for 10 minutes every 4 hours",
+      "Change dressing as instructed",
+      "Adhere to physiotherapy schedule",
+      "Straight leg raising and ankle pumps – 5 mins, 4x daily",
+      "Partial weight bearing with walker/crutch from Day 3",
+      "Physiotherapy session to start Day 4",
+      "Avoid squatting and twisting for 3 weeks"
+    ],
+    "followUp": "Follow-up Day 10 after surgery (19/11/2025)",
+    "dailyQuestions": [
+      "Pain level (0-10)?",
+      "Any knee swelling or redness?",
+      "Did you take prescribed medications on schedule?",
+      "Any fever above 100°F?",
+      "Any knee locking or inability to move?",
+      "Did you complete physiotherapy exercises today?",
+      "Mobility update: weight bearing status?"
+    ]
+  }
+}

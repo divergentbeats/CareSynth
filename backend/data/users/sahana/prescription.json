@@ -1,0 +1,38 @@
+{
+  "userId": "sahana",
+  "uploadedAt": "2025-11-15T00:00:00.000Z",
+  "filePath": "",
+  "extracted": {
+    "condition": "Acute Viral Upper Respiratory Infection",
+    "expectedRecoveryDays": 7,
+    "symptomProgression": [
+      85, 82, 78, 60, 40, 20, 10
+    ],
+    "medications": [
+      "Cefpodoxime 200mg – One tablet twice daily for 5 days",
+      "Paracetamol 650mg – One tablet as needed (max 4/day)"
+    ],
+    "redFlags": [
+      "Fever persisting beyond 3 days",
+      "Appearance of rash",
+      "Onset of breathlessness",
+      "Chest pain"
+    ],
+    "instructions": [
+      "Steam inhalation 3 times/day",
+      "Drink 2-3 litres of fluids daily",
+      "Take complete bed rest during fever phase",
+      "Continue medications as prescribed"
+    ],
+    "followUp": "Follow-up Day 5 (19/11/2025)",
+    "dailyQuestions": [
+      "Fever level today (°F)?",
+      "Sore throat severity (0-10)?",
+      "Cough frequency?",
+      "Did you take prescribed medications?",
+      "Any shortness of breath or chest pain?",
+      "Fluid intake adequate today?",
+      "Energy level compared to yesterday?"
+    ]
+  }
+}

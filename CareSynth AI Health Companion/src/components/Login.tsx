@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 
 interface LoginProps {
-  onLogin: () => void;
+  onLogin: (name: string) => void;
 }
 
 export function Login({ onLogin }: LoginProps) {
@@ -12,7 +12,7 @@ export function Login({ onLogin }: LoginProps) {
   const [password, setPassword] = useState('');
 
   const handleContinue = () => {
-    onLogin();
+    onLogin(email || 'Demo User');
   };
 
   return (
@@ -83,16 +83,16 @@ export function Login({ onLogin }: LoginProps) {
             {/* Input Fields - Enhanced with Subtle Inner-Shadow Highlight */}
             <div className="space-y-5 mb-6 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
 
-              {/* Email */}
+              {/* Username */}
               <div>
                 <label className="block mb-3 luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
-                  Email
+                  Username
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#A0A0A0]" strokeWidth={2} />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#A0A0A0]" strokeWidth={2} />
                   <Input
-                    type="email"
-                    placeholder="you@example.com"
+                    type="text"
+                    placeholder="Enter your name (e.g., Kiran, Sahana)"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-11 rounded-xl h-12 transition-all duration-300 bg-white/[0.05] backdrop-blur-sm border-[#37E29D]/20 text-[#E8E8E8] placeholder:text-[#A0A0A0] focus:border-[#37E29D] focus:ring-[#37E29D]/30 focus:shadow-[inset_0_2px_8px_rgba(55,226,157,0.1)]"
