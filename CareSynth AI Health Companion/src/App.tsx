@@ -1,5 +1,8 @@
-import { useState } from 'react';
-import { Heart, Menu, X, Moon, Sun, CheckCircle2, TrendingUp, Clock, Pill, MessageSquare, Brain } from 'lucide-react';
+import { useState, useEffect } from 'react';
+  import { Heart, Menu, X, Moon, Sun, CheckCircle2, TrendingUp, Clock, Pill, MessageSquare, Brain } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from './components/ui/dialog';
+import { MessageDoctor } from './components/patient/MessageDoctor';
+import { DoctorAIChat } from './components/doctor/DoctorAIChat';
 import { Button } from './components/ui/button';
 import { Toaster } from './components/ui/sonner';
 
@@ -13,7 +16,7 @@ import { ConflictDetectionCard } from './components/patient/ConflictDetectionCar
 import { MedicationTracker } from './components/patient/MedicationTracker';
 import { RecoveryTimeline } from './components/patient/RecoveryTimeline';
 import { DailyCheckIn } from './components/patient/DailyCheckIn';
-import { DailyQuestionsCard } from './components/patient/DailyQuestionsCard';
+// import { DailyQuestionsCard } from './components/patient/DailyQuestionsCard';
 import { KiranPrescriptionPage } from './components/patient/KiranPrescriptionPage';
 
 // Prescription Onboarding Modal
@@ -30,7 +33,7 @@ import { PatientProvider, usePatient } from './lib/PatientContext';
 
 type DashboardSection = 'recovery' | 'metrics' | 'timeline' | 'medication' | 'assistant' | 'contact';
 
-function DashboardContent({ showOnboarding, setShowOnboarding }: { showOnboarding: boolean; setShowOnboarding: (show: boolean) => void }) {
+function DashboardContent({ showOnboarding, setShowOnboarding, onLogout }: { showOnboarding: boolean; setShowOnboarding: (show: boolean) => void; onLogout: () => void }) {
   const { patientProfile } = usePatient();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [painLevel, setPainLevel] = useState(currentPatient.painLevel);
@@ -39,6 +42,7 @@ function DashboardContent({ showOnboarding, setShowOnboarding }: { showOnboardin
   const [clickedButton, setClickedButton] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showPrescriptionPage, setShowPrescriptionPage] = useState(false);
+  const [showDoctorChat, setShowDoctorChat] = useState(false);
 
   // Show prescription page if requested
   if (showPrescriptionPage) {
@@ -207,11 +211,7 @@ function DashboardContent({ showOnboarding, setShowOnboarding }: { showOnboardin
                     </div>
                     <div className={`card-wrapper ${clickedButton === 'metrics-2' ? 'shine-effect' : ''}`}>
                       <div className={`${isDarkTheme ? 'bg-[#1A2F2B] border border-white/5' : 'bg-white/50 border border-white/30'} rounded-2xl p-6 backdrop-blur-md`}>
-                        {patientProfile?.dailyCheckInQuestions ? (
-                          <DailyQuestionsCard questions={patientProfile.dailyCheckInQuestions} />
-                        ) : (
-                          <DailyCheckIn onCheckInComplete={handlePainUpdate} />
-                        )}
+                        <DailyCheckIn onCheckInComplete={handlePainUpdate} />
                       </div>
                     </div>
                   </div>
@@ -397,7 +397,7 @@ function DashboardContent({ showOnboarding, setShowOnboarding }: { showOnboardin
                         Send messages to your healthcare provider for personalized medical advice and support.
                       </p>
                       <Button
-                        onClick={() => handleButtonClick('contact-btn', () => window.open('https://wa.me/918044478899?text=Hello%20Doctor,%20I%20need%20medical%20advice%20regarding%20my%20recovery', '_blank'))}
+                        onClick={() => handleButtonClick('contact-btn', () => setShowDoctorChat(true))}
                         className={`bg-gradient-to-r from-[#37E29D] to-[#1C8B82] hover:from-[#2FCA89] hover:to-[#157770] text-white rounded-xl px-6 py-2 font-semibold transition-all duration-300 hover:scale-105 active:scale-95 text-sm ${
                           clickedButton === 'contact-btn' ? 'shine-effect' : ''
                         }`}
@@ -418,7 +418,7 @@ function DashboardContent({ showOnboarding, setShowOnboarding }: { showOnboardin
   };
 
   return (
-    <div className="min-h-screen relative transition-all duration-400 flex flex-col lg:flex-row bg-gradient-to-br from-[#0E1113] to-[#1C1F22]">
+      <div className="min-h-screen relative transition-all duration-400 flex flex-col lg:flex-row bg-gradient-to-br from-[#0E1113] to-[#1C1F22]">
       {/* Blurred Mint/Teal Light Glow - Top Left */}
       <div className="fixed -top-40 -left-40 w-96 h-96 rounded-full bg-[#37E29D] opacity-[0.15] blur-[100px] pointer-events-none transition-opacity duration-400" />
 
@@ -505,7 +505,7 @@ function DashboardContent({ showOnboarding, setShowOnboarding }: { showOnboardin
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="border-b backdrop-blur-md transition-all duration-500 border-white/10 bg-[#0E1113]/80">
-          <div className="px-4 lg:px-8 py-4 flex items-center justify-between">
+          <div className="px-4 lg:px-8 py-4 flex items-center justify-between relative">
             <div className="flex items-center gap-4">
               {/* Mobile Menu Button */}
               <Button
@@ -531,13 +531,24 @@ function DashboardContent({ showOnboarding, setShowOnboarding }: { showOnboardin
               </div>
             </div>
 
-            {/* Theme Toggle - Mobile Only */}
-            <button
-              onClick={() => setIsDarkTheme(!isDarkTheme)}
-              className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 bg-white/10 border border-white/20 hover:bg-white/15"
-            >
-              <Moon className="w-5 h-5 text-[#37E29D]" />
-            </button>
+            <div className="flex items-center gap-3">
+              {/* Theme Toggle - Mobile Only */}
+              <button
+                onClick={() => setIsDarkTheme(!isDarkTheme)}
+                className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 bg-white/10 border border-white/20 hover:bg-white/15"
+              >
+                <Moon className="w-5 h-5 text-[#37E29D]" />
+              </button>
+
+            
+          </div>
+          <Button
+            onClick={onLogout}
+            className="absolute right-4 top-4 rounded-xl btn-gradient-shift text-white"
+            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
+          >
+            Login
+          </Button>
           </div>
 
           {/* Mobile Menu */}
@@ -588,6 +599,17 @@ function DashboardContent({ showOnboarding, setShowOnboarding }: { showOnboardin
         </footer>
       </div>
 
+      <Dialog open={showDoctorChat} onOpenChange={setShowDoctorChat}>
+        <DialogContent className="max-w-4xl">
+          <DialogTitle className="gradient-text-glow">Message Your Doctor</DialogTitle>
+          <DialogDescription>Start a conversation and attach an AI summary if needed.</DialogDescription>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <MessageDoctor patient={currentPatientData} />
+            <DoctorAIChat selectedPatientName={currentPatientData.name} />
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Prescription Onboarding Modal */}
       <PrescriptionOnboardingModal
         isOpen={showOnboarding}
@@ -599,15 +621,39 @@ function DashboardContent({ showOnboarding, setShowOnboarding }: { showOnboardin
 }
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    try { return localStorage.getItem('cs_isLoggedIn') === 'true'; } catch { return false; }
+  });
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [patientProfile, setPatientProfile] = useState<any>(null);
+  const [userName, setUserName] = useState<string>(() => {
+    try { return localStorage.getItem('cs_userName') || ''; } catch { return ''; }
+  });
+  const [patientProfile, setPatientProfile] = useState<any>(() => {
+    try {
+      const raw = localStorage.getItem('cs_patientProfile');
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  // Persist patient profile updates
+  useEffect(() => {
+    try {
+      if (patientProfile) {
+        localStorage.setItem('cs_patientProfile', JSON.stringify(patientProfile));
+      }
+    } catch {}
+  }, [patientProfile]);
 
   const handleLogin = (name: string) => {
     setUserName(name);
     setIsLoggedIn(true);
     setShowOnboarding(true);
+    try {
+      localStorage.setItem('cs_isLoggedIn', 'true');
+      localStorage.setItem('cs_userName', name);
+    } catch {}
 
     // Auto-load profile based on username
     if (name.toLowerCase().includes('kiran')) {
@@ -615,6 +661,7 @@ export default function App() {
         .then(res => res.json())
         .then(data => {
           setPatientProfile(data);
+          try { localStorage.setItem('cs_patientProfile', JSON.stringify(data)); } catch {}
         })
         .catch(err => console.log('Kiran profile not found'));
     } else if (name.toLowerCase().includes('sahana')) {
@@ -622,9 +669,20 @@ export default function App() {
         .then(res => res.json())
         .then(data => {
           setPatientProfile(data);
+          try { localStorage.setItem('cs_patientProfile', JSON.stringify(data)); } catch {}
         })
         .catch(err => console.log('Sahana profile not found'));
     }
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setShowOnboarding(false);
+    try {
+      localStorage.setItem('cs_isLoggedIn', 'false');
+      localStorage.removeItem('cs_userName');
+      localStorage.removeItem('cs_patientProfile');
+    } catch {}
   };
 
   if (!isLoggedIn) {
@@ -641,7 +699,7 @@ export default function App() {
       setIsAnalyzing: () => {}
     }}>
       <ThemeContext.Provider value={{ isDarkTheme: true }}>
-        <DashboardContent showOnboarding={showOnboarding} setShowOnboarding={setShowOnboarding} />
+        <DashboardContent showOnboarding={showOnboarding} setShowOnboarding={setShowOnboarding} onLogout={handleLogout} />
         <Toaster position="top-right" />
 
         {/* Prescription Onboarding Modal */}

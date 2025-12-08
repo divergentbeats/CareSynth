@@ -106,15 +106,26 @@ export function ConflictDetectionCard({ conflicts = [], onViewDetails }: Conflic
         </p>
       </div>
 
-      {/* View Details Button */}
-      <button
-        onClick={() => { window.location.href = 'https://trae2wo7a0vf.vercel.app/'; }}
-        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#FFB84D] to-[#FF6B6B] text-white rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
-        style={{ fontFamily: 'Inter, sans-serif' }}
-      >
-        <span>View Conflict Details</span>
-        <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-      </button>
+      {/* Report Buttons */}
+      <div className="space-y-3">
+        <button
+          onClick={() => { window.location.href = 'https://trae7ibcfc5n.vercel.app'; }}
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#FFB84D] to-[#FF6B6B] text-white rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
+          style={{ fontFamily: 'Inter, sans-serif' }}
+        >
+          <span>Report - Prescription Conflict Analysis</span>
+          <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </button>
+
+        <button
+          onClick={() => { window.location.href = 'https://trae2wo7a0vf.vercel.app/'; }}
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#5BC7FF] to-[#37E29D] text-white rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
+          style={{ fontFamily: 'Inter, sans-serif' }}
+        >
+          <span>Report - Health Status Conflict Analysis</span>
+          <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </button>
+      </div>
     </Card>
   );
 }

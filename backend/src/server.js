@@ -21,7 +21,7 @@ app.use('/prescription', prescriptionRouter);
 app.use('/dashboard', dashboardRouter);
 app.use('/checkin', checkinsRouter);
 
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`CareSynth backend running on port ${PORT}`);
 });

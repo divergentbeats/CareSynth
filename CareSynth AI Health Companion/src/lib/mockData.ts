@@ -124,11 +124,27 @@ export const timeline: TimelineEvent[] = [
     completed: false
   },
   {
+    id: '4a',
+    date: 'Nov 12, 2025',
+    title: 'Post-PT Pain Spike',
+    description: 'Pain increased to 6/10 after exercises; advised ice and rest',
+    type: 'alert',
+    completed: true
+  },
+  {
     id: '5',
     date: 'Nov 19, 2025',
     title: 'Follow-up Appointment',
     description: 'Day 10 post-op check with Dr. Gaurav Menon',
     type: 'checkup',
+    completed: false
+  },
+  {
+    id: '6a',
+    date: 'Nov 22, 2025',
+    title: 'Mobility Improvement Milestone',
+    description: 'Straight leg raise without assistance achieved',
+    type: 'milestone',
     completed: false
   },
   {

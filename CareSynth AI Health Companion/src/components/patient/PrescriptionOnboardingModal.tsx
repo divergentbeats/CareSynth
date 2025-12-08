@@ -91,11 +91,22 @@ const PrescriptionOnboardingModal: React.FC<PrescriptionOnboardingModalProps> = 
       // Detect keywords and load appropriate profile
       const profile = await loadProfileFromText(text);
 
-      // Set patient profile in context
-      setPatientProfile(profile);
-
-      // Generate daily questions using OpenAI
-      const questions = await generateDailyQuestions(JSON.stringify(profile));
+      // Set patient profile and curated daily questions
+      let questions: string[] = [];
+      if (profile?.patient?.name?.toLowerCase() === 'kiran') {
+        const base = [
+          'Was your knee pain under control today?',
+          'Did you notice swelling around the operated knee?',
+          'Could you perform straight leg raising today?',
+          'Were you able to bear weight with walker/crutch?',
+          'Any fever or wound discharge observed today?'
+        ];
+        const offset = new Date().getDate() % base.length;
+        questions = [...base.slice(offset), ...base.slice(0, offset)];
+      } else {
+        questions = await generateDailyQuestions(JSON.stringify(profile));
+      }
+      setPatientProfile({ ...profile, dailyCheckInQuestions: questions });
       setDailyQuestions(questions);
 
       // Start analysis animation
