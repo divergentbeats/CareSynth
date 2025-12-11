@@ -37,12 +37,12 @@ export function Login({ onLogin }: LoginProps) {
             }}
           />
         ))}
-        
+
         {/* Login Card Container - Enhanced Entrance Animation */}
         <div className="relative w-full max-w-md z-10 login-slide-in">
           {/* Glowing Border Effect */}
           <div className="absolute -inset-0.5 rounded-[24px] blur-lg bg-gradient-to-r from-[#37E29D] via-[#5BC7FF] to-[#37E29D] glowing-border" />
-          
+
           {/* Glass Card */}
           <div className="relative rounded-[20px] shadow-[0_8px_32px_rgba(31,38,135,0.15)] p-8 bg-white/[0.08] backdrop-blur-xl border border-[#37E29D]/20">
             {/* Logo & Header */}
@@ -53,14 +53,14 @@ export function Login({ onLogin }: LoginProps) {
                   className="absolute inset-0 rounded-2xl pulse-ring"
                   style={{ background: '#37E29D' }}
                 />
-                
+
                 <div
                   className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-[#37E29D] to-[#1C8B82] transition-transform hover:scale-105"
                 >
                   <Zap className="w-10 h-10 text-white" fill="white" />
                 </div>
               </div>
-              
+
               <h1 className="text-2xl mb-3 flex items-center justify-center gap-3 luxury-spacing text-[#E8E8E8]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
                 CareSynth AI Recovery Verification Assistant
                 {/* Animated AI Spark */}
@@ -154,12 +154,23 @@ export function Login({ onLogin }: LoginProps) {
                 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '14px' }}
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
-                  <path fill="#EA4335" d="M5.266 9.765A7.077 7.077 0 0 1 12 4.909c1.69 0 3.218.6 4.418 1.582L19.91 3C17.782 1.145 15.055 0 12 0 7.27 0 3.198 2.698 1.24 6.65l4.026 3.115Z"/>
-                  <path fill="#34A853" d="M16.04 18.013c-1.09.703-2.474 1.078-4.04 1.078a7.077 7.077 0 0 1-6.723-4.823l-4.04 3.067A11.965 11.965 0 0 0 12 24c2.933 0 5.735-1.043 7.834-3l-3.793-2.987Z"/>
-                  <path fill="#4A90E2" d="M19.834 21c2.195-2.048 3.62-5.096 3.62-9 0-.71-.109-1.473-.272-2.182H12v4.637h6.436c-.317 1.559-1.17 2.766-2.395 3.558L19.834 21Z"/>
-                  <path fill="#FBBC05" d="M5.277 14.268A7.12 7.12 0 0 1 4.909 12c0-.782.125-1.533.357-2.235L1.24 6.65A11.934 11.934 0 0 0 0 12c0 1.92.445 3.73 1.237 5.335l4.04-3.067Z"/>
+                  <path fill="#EA4335" d="M5.266 9.765A7.077 7.077 0 0 1 12 4.909c1.69 0 3.218.6 4.418 1.582L19.91 3C17.782 1.145 15.055 0 12 0 7.27 0 3.198 2.698 1.24 6.65l4.026 3.115Z" />
+                  <path fill="#34A853" d="M16.04 18.013c-1.09.703-2.474 1.078-4.04 1.078a7.077 7.077 0 0 1-6.723-4.823l-4.04 3.067A11.965 11.965 0 0 0 12 24c2.933 0 5.735-1.043 7.834-3l-3.793-2.987Z" />
+                  <path fill="#4A90E2" d="M19.834 21c2.195-2.048 3.62-5.096 3.62-9 0-.71-.109-1.473-.272-2.182H12v4.637h6.436c-.317 1.559-1.17 2.766-2.395 3.558L19.834 21Z" />
+                  <path fill="#FBBC05" d="M5.277 14.268A7.12 7.12 0 0 1 4.909 12c0-.782.125-1.533.357-2.235L1.24 6.65A11.934 11.934 0 0 0 0 12c0 1.92.445 3.73 1.237 5.335l4.04-3.067Z" />
                 </svg>
                 <span>Google</span>
+              </button>
+            </div>
+
+            {/* Doctor Portal Access */}
+            <div className="mt-6 text-center animate-in fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
+              <button
+                onClick={() => window.location.href = '/doctor.html'}
+                className="text-xs text-[#5BC7FF] hover:text-[#4AB6EE] transition-colors underline-offset-4 hover:underline"
+                style={{ fontFamily: 'Inter, sans-serif' }}
+              >
+                Access Doctor Portal
               </button>
             </div>
 
@@ -185,18 +196,18 @@ export function Login({ onLogin }: LoginProps) {
       <div className="hidden lg:flex flex-1 relative items-center justify-center p-12 overflow-hidden bg-gradient-to-br from-[#0E1113] to-[#1C1F22]">
         {/* Gradient Background with Intensified Glow */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#37E29D]/15 via-[#1C8B82]/8 to-transparent" />
-        
+
         {/* Diagonal Light Sweep Animation */}
         <div
           className="absolute inset-0 bg-gradient-to-br from-transparent via-[#37E29D]/30 to-transparent diagonal-sweep"
           style={{ width: '100%', height: '200%' }}
         />
-        
+
         {/* Animated Particles/Orbs with Intensified Glow */}
         <div className="absolute top-1/4 left-1/4 w-40 h-40 rounded-full blur-3xl bg-[#37E29D]/20 orb-1-float" />
         <div className="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full blur-3xl bg-[#5BC7FF]/20 orb-2-float" />
         <div className="absolute top-1/2 right-1/3 w-32 h-32 rounded-full blur-2xl bg-[#37E29D]/15 orb-3-float" />
-        
+
         {/* Floating Light Particles for Right Panel */}
         {[...Array(12)].map((_, i) => (
           <div
@@ -311,7 +322,7 @@ export function Login({ onLogin }: LoginProps) {
                 </linearGradient>
               </defs>
             </svg>
-            
+
             {/* Glowing Dot Moving Along Wave */}
             <div
               className="absolute w-3 h-3 rounded-full dot-move-animation"

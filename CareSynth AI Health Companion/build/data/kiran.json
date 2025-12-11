@@ -1,0 +1,155 @@
+{
+  "patient": {
+    "id": "230177",
+    "name": "Kiran",
+    "age": 32,
+    "condition": "Left Knee Arthroscopy (Partial Meniscectomy)",
+    "surgery": "Left Knee Arthroscopy (Partial Meniscectomy)",
+    "diagnosis": "Left Knee Arthroscopy (Partial Meniscectomy)",
+    "surgeryDate": "09/11/2025",
+    "dayPostOp": 3,
+    "riskScore": 25,
+    "hospital": "Sunrise Orthopaedic & Multispeciality Hospital",
+    "hospitalAddress": "1/220, Main Road, Bengaluru - 560034",
+    "hospitalContact": "080-44478899",
+    "doctor": "Dr. Gaurav Menon, MS (Ortho)",
+    "doctorRegNo": "KMC/59721",
+    "followUpDate": "19/11/2025"
+  },
+  "prescriptionSummary": {
+    "condition": "Knee Arthroscopy - Meniscectomy",
+    "recoveryDays": 84,
+    "symptomProgression": [
+      {
+        "week": 1,
+        "pain": "Severe (7-9/10)",
+        "swelling": "Moderate to severe",
+        "mobility": "0-45° passive",
+        "description": "Acute post-operative phase with significant pain and swelling"
+      },
+      {
+        "week": 2,
+        "pain": "Moderate (4-6/10)",
+        "swelling": "Moderate",
+        "mobility": "45-90° passive",
+        "description": "Early recovery with decreasing swelling"
+      },
+      {
+        "week": 3,
+        "pain": "Mild to moderate (2-4/10)",
+        "swelling": "Mild",
+        "mobility": "90-120° active",
+        "description": "Progressive mobility improvement"
+      },
+      {
+        "week": 4,
+        "pain": "Mild (1-3/10)",
+        "swelling": "Minimal",
+        "mobility": "120-135° active",
+        "description": "Good functional recovery"
+      },
+      {
+        "week": 5,
+        "pain": "Minimal (0-2/10)",
+        "swelling": "None",
+        "mobility": "135°+ active",
+        "description": "Near full recovery"
+      },
+      {
+        "week": 6,
+        "pain": "None (0/10)",
+        "swelling": "None",
+        "mobility": "Full ROM",
+        "description": "Complete recovery expected"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Oxycodone",
+        "dosage": "5mg",
+        "frequency": "One tablet every 6 hours for pain",
+        "duration": "As needed for pain"
+      },
+      {
+        "name": "Aspirin",
+        "dosage": "81mg",
+        "frequency": "One tablet once daily (morning)",
+        "duration": "14 days"
+      }
+    ],
+    "doctorInstructions": [
+      "Keep the operated knee elevated while resting",
+      "Apply ice packs for 10 minutes every 4 hours",
+      "Change dressing as instructed",
+      "Adhere to physiotherapy schedule",
+      "Straight leg raising and ankle pumps – 5 mins, 4x daily",
+      "Partial weight bearing with walker/crutch from Day 3",
+      "Physiotherapy session to start Day 4 (as scheduled)",
+      "Avoid squatting, twisting for 3 weeks",
+      "Take medications as prescribed",
+      "Monitor for red flag symptoms",
+      "Follow up on 19/11/2025 (Day 10 after surgery)"
+    ],
+    "complicationsTimeline": [
+      {
+        "timeframe": "Day 1-2",
+        "risk": "High",
+        "complications": ["Severe pain not controlled by medication", "Excessive swelling", "Bleeding from wound"],
+        "action": "Contact surgeon immediately"
+      },
+      {
+        "timeframe": "Day 3-5",
+        "risk": "Medium",
+        "complications": ["Infection signs (redness, warmth, discharge)", "Deep vein thrombosis (DVT)", "Persistent severe pain"],
+        "action": "Contact healthcare provider"
+      },
+      {
+        "timeframe": "Week 1-2",
+        "risk": "Medium",
+        "complications": ["Knee stiffness", "Delayed healing", "Complex regional pain syndrome"],
+        "action": "Follow up with orthopedic surgeon"
+      },
+      {
+        "timeframe": "Week 2-4",
+        "risk": "Low",
+        "complications": ["Arthrofibrosis", "Meniscus retear", "Patellar maltracking"],
+        "action": "Continue physiotherapy and follow-up"
+      },
+      {
+        "timeframe": "Week 4-12",
+        "risk": "Low",
+        "complications": ["Chronic pain", "Reduced range of motion", "Instability"],
+        "action": "Long-term follow-up with orthopedic specialist"
+      }
+    ],
+    "redFlagSymptoms": [
+      "Sudden onset swelling, severe pain",
+      "Fever above 100°F",
+      "Knee locking or inability to move knee",
+      "Bleeding or discharge from wound site"
+    ]
+  },
+  "expectedProgress": {
+    "pain": [8, 7, 6, 5, 4, 3, 2, 2, 2, 1, 1, 1, 1, 0, 0],
+    "swelling": [9, 8, 7, 6, 5, 4, 3, 2, 2, 1, 1, 1, 0, 0, 0],
+    "mobility": [10, 15, 25, 35, 45, 55, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+    "function": [10, 15, 25, 35, 45, 55, 65, 75, 85, 95, 100, 100, 100, 100, 100]
+  },
+  "dailyCheckInQuestions": [
+    "On a scale of 0-10, how would you rate your knee pain today?",
+    "How much swelling do you notice in your left knee compared to yesterday?",
+    "Can you perform straight leg raising exercises without difficulty?",
+    "Have you completed your ankle pump exercises today (4x daily)?",
+    "How many minutes did you apply ice packs today?",
+    "Are you using walker/crutch for partial weight bearing as instructed?",
+    "Have you attended your scheduled physiotherapy session today?",
+    "Have you taken your medications (Oxycodone and Aspirin) as prescribed?",
+    "On a scale of 0-10, how would you rate your knee mobility today?",
+    "Have you experienced any red flag symptoms (severe pain, fever, bleeding, etc.)?",
+    "How many hours have you kept your knee elevated while resting?",
+    "Have you changed your dressing as instructed today?",
+    "Can you bend your knee to at least 90 degrees?",
+    "Have you avoided squatting or twisting movements today?",
+    "How confident do you feel about your recovery progress?"
+  ]
+}

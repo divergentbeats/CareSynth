@@ -11,9 +11,12 @@ interface AlertFeedProps {
   onAlertClick?: (alert: Alert) => void;
 }
 
-export function AlertFeed({ alerts, onAlertClick }: AlertFeedProps) {
+export function AlertFeed({ alerts = [], onAlertClick }: AlertFeedProps) {
   const { isDarkTheme } = useTheme();
   const [dismissedAlerts, setDismissedAlerts] = useState<string[]>([]);
+
+  // Ensure alerts is an array
+  const safeAlerts = Array.isArray(alerts) ? alerts : [];
 
   const getIcon = (type: Alert['type']) => {
     switch (type) {
@@ -54,7 +57,7 @@ export function AlertFeed({ alerts, onAlertClick }: AlertFeedProps) {
     setDismissedAlerts(prev => [...prev, alertId]);
   };
 
-  const visibleAlerts = alerts.filter(alert => !dismissedAlerts.includes(alert.id));
+  const visibleAlerts = safeAlerts.filter(alert => !dismissedAlerts.includes(alert.id));
   const unreadCount = visibleAlerts.filter(a => !a.read).length;
 
   return (
@@ -90,13 +93,11 @@ export function AlertFeed({ alerts, onAlertClick }: AlertFeedProps) {
             return (
               <div
                 key={alert.id}
-                className={`p-4 rounded-xl border-l-4 ${borderColor} border backdrop-blur-sm transition-all animate-in fade-in slide-in-from-left-4 ${
-                  isDarkTheme
+                className={`p-4 rounded-xl border-l-4 ${borderColor} border backdrop-blur-sm transition-all animate-in fade-in slide-in-from-left-4 ${isDarkTheme
                     ? 'bg-white/[0.03] border-white/[0.08]'
                     : 'bg-gray-50 border-gray-200'
-                } ${
-                  !alert.read ? 'ring-1 ring-white/[0.12]' : ''
-                }`}
+                  } ${!alert.read ? 'ring-1 ring-white/[0.12]' : ''
+                  }`}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <div className="flex items-start gap-3">
@@ -146,11 +147,10 @@ export function AlertFeed({ alerts, onAlertClick }: AlertFeedProps) {
                         onClick={() => onAlertClick?.(alert)}
                         size="sm"
                         variant="outline"
-                        className={`rounded-lg text-xs text-[#5BC7FF] ${
-                          isDarkTheme
+                        className={`rounded-lg text-xs text-[#5BC7FF] ${isDarkTheme
                             ? 'border-white/20 bg-white/[0.03] hover:bg-white/[0.08]'
                             : 'border-gray-300 bg-white hover:bg-gray-50'
-                        }`}
+                          }`}
                         style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
                       >
                         View Patient
@@ -179,18 +179,17 @@ export function AlertFeed({ alerts, onAlertClick }: AlertFeedProps) {
 
         {visibleAlerts.length > 0 && (
           <div className={`mt-4 pt-4 border-t ${isDarkTheme ? 'border-white/[0.08]' : 'border-gray-200'} flex gap-2 animate-in fade-in`} style={{ animationDelay: '500ms' }}>
-            <Button 
-              variant="outline" 
-              className={`flex-1 rounded-xl text-sm ${
-                isDarkTheme
+            <Button
+              variant="outline"
+              className={`flex-1 rounded-xl text-sm ${isDarkTheme
                   ? 'border-white/20 bg-white/[0.03] hover:bg-white/[0.08]'
                   : 'border-gray-300 bg-white hover:bg-gray-50'
-              }`}
+                }`}
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
             >
               <span className="gradient-text">Mark All Read</span>
             </Button>
-            <Button 
+            <Button
               className="flex-1 btn-gradient-shift text-white rounded-xl text-sm"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
             >

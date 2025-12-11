@@ -49,12 +49,12 @@ export function RealityCheckCard({ patient, onViewDetails }: RealityCheckCardPro
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-            <h2
-              className={isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}
-              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '32px' }}
-            >
-              Reality Check
-            </h2>
+              <h2
+                className={isDarkTheme ? 'text-[#E8E8E8]' : 'text-[#0B1220]'}
+                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '32px' }}
+              >
+                Reality Check
+              </h2>
             </div>
             <p
               className={isDarkTheme ? 'text-[#A0A0A0]' : 'text-[#4B5563]'}
@@ -63,11 +63,10 @@ export function RealityCheckCard({ patient, onViewDetails }: RealityCheckCardPro
               AI Alignment Analysis
             </p>
           </div>
-          <div className={`flex items-center gap-2 px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-300 ${
-            statusColor === 'green' ? 'bg-green-500/20 border border-green-500/30 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.2)]' :
-            statusColor === 'yellow' ? 'bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.2)]' :
-            'bg-red-500/20 border border-red-500/30 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]'
-          }`}>
+          <div className={`flex items-center gap-2 px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-300 ${statusColor === 'green' ? 'bg-green-500/20 border border-green-500/30 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.2)]' :
+              statusColor === 'yellow' ? 'bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.2)]' :
+                'bg-red-500/20 border border-red-500/30 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]'
+            }`}>
             <StatusIcon className="w-4 h-4 animate-pulse" />
             <span className="text-xs font-medium" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
               {statusText}
@@ -91,13 +90,13 @@ export function RealityCheckCard({ patient, onViewDetails }: RealityCheckCardPro
                 <linearGradient id={`scoreGradient-${statusColor}`} x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor={
                     statusColor === 'green' ? '#37E29D' :
-                    statusColor === 'yellow' ? '#FFD580' :
-                    '#F47C7C'
+                      statusColor === 'yellow' ? '#FFD580' :
+                        '#F47C7C'
                   } />
                   <stop offset="100%" stopColor={
                     statusColor === 'green' ? '#1C8B82' :
-                    statusColor === 'yellow' ? '#FFB84D' :
-                    '#FF6B6B'
+                      statusColor === 'yellow' ? '#FFB84D' :
+                        '#FF6B6B'
                   } />
                 </linearGradient>
               </defs>
@@ -113,11 +112,10 @@ export function RealityCheckCard({ patient, onViewDetails }: RealityCheckCardPro
                 strokeDashoffset={`${2 * Math.PI * 50 * (1 - alignmentScore / 100)}`}
                 className="transition-all duration-1000 ease-out"
                 style={{
-                  filter: `drop-shadow(0 0 8px ${
-                    statusColor === 'green' ? 'rgba(55,226,157,0.4)' :
-                    statusColor === 'yellow' ? 'rgba(255,213,128,0.4)' :
-                    'rgba(244,124,124,0.4)'
-                  })`
+                  filter: `drop-shadow(0 0 8px ${statusColor === 'green' ? 'rgba(55,226,157,0.4)' :
+                      statusColor === 'yellow' ? 'rgba(255,213,128,0.4)' :
+                        'rgba(244,124,124,0.4)'
+                    })`
                 }}
               />
             </svg>
@@ -173,7 +171,7 @@ export function RealityCheckCard({ patient, onViewDetails }: RealityCheckCardPro
         {/* View Details Button */}
         <button
           onClick={() => {
-            window.open('http://localhost:5000', '_blank');
+            window.open(import.meta.env.VITE_API_ABSOLUTE_URL || 'http://localhost:5000', '_blank');
           }}
           className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#5BC7FF] to-[#37E29D] text-white rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
           style={{ fontFamily: 'Inter, sans-serif' }}
